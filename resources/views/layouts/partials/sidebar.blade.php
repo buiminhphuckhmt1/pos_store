@@ -63,6 +63,11 @@
                     <div data-i18n="Tables">Cài đặt cấu hình</div>
                   </a>
                 </li>
+                <li class="menu-item">
+                    <a href="{{route('logout')}}" class="menu-link" >
+                        <div data-i18n="Tables">Đăng xuất</div>
+                    </a>
+                </li>
               </ul>
             </li>
             <li class="menu-item open">

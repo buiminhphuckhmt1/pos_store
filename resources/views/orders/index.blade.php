@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
-@section('title', 'Orders List')
-@section('content-header', 'Order List')
+@section('title', 'Danh sách hóa đơn')
+@section('content-header', 'Danh sách hóa đơn')
 @section('content-actions')
-    <a href="{{route('cart.index')}}" class="btn btn-primary">Open POS</a>
+    <a href="{{route('cart.index')}}" class="btn btn-primary">Tạo hóa đơn</a>
 @endsection
 
 @section('content')
@@ -11,7 +11,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-7"></div>
-            <div class="col-md-5">
+            <div class="col-md-5 px-4">
                 <form action="{{route('orders.index')}}">
                     <div class="row">
                         <div class="col-md-5">
@@ -21,7 +21,7 @@
                             <input type="date" name="end_date" class="form-control" value="{{request('end_date')}}" />
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-outline-primary" type="submit">Submit</button>
+                            <button class="btn btn-outline-primary" type="submit">Lọc</button>
                         </div>
                     </div>
                 </form>
@@ -31,12 +31,12 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Customer Name</th>
-                    <th>Total</th>
-                    <th>Received Amount</th>
-                    <th>Status</th>
-                    <th>To Pay</th>
-                    <th>Created At</th>
+                    <th>Tên khách hàng</th>
+                    <th>Tổng giá trị</th>
+                    <th>Số tiền đã nhận</th>
+                    <th>Trạng thái</th>
+                    <th>Tiền nợ</th>
+                    <th>Ngày tạo</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,20 +44,20 @@
                 <tr>
                     <td>{{$order->id}}</td>
                     <td>{{$order->getCustomerName()}}</td>
-                    <td>{{ config('settings.currency_symbol') }} {{$order->formattedTotal()}}</td>
-                    <td>{{ config('settings.currency_symbol') }} {{$order->formattedReceivedAmount()}}</td>
+                    <td>{{$order->formattedTotal()}} {{ config('settings.currency_symbol') }}</td>
+                    <td>{{$order->formattedReceivedAmount()}} {{config('settings.currency_symbol') }}</td>
                     <td>
                         @if($order->receivedAmount() == 0)
-                            <span class="badge badge-danger">Not Paid</span>
+                            <span class="badge bg-label-danger me-1">NỢ</span>
                         @elseif($order->receivedAmount() < $order->total())
-                            <span class="badge badge-warning">Partial</span>
+                            <span class="badge bg-label-warning me-1">MỘT PHẦN</span>
                         @elseif($order->receivedAmount() == $order->total())
-                            <span class="badge badge-success">Paid</span>
+                            <span class="badge bg-label-success me-1">TRẢ ĐỦ</span>
                         @elseif($order->receivedAmount() > $order->total())
-                            <span class="badge badge-info">Change</span>
+                            <span class="badge bg-label-info me-1">DƯ</span>
                         @endif
                     </td>
-                    <td>{{config('settings.currency_symbol')}} {{number_format($order->total() - $order->receivedAmount(), 2)}}</td>
+                    <td> {{number_format($order->total() - $order->receivedAmount())}} {{config('settings.currency_symbol')}}</td>
                     <td>{{$order->created_at}}</td>
                 </tr>
                 @endforeach
@@ -66,8 +66,8 @@
                 <tr>
                     <th></th>
                     <th></th>
-                    <th>{{ config('settings.currency_symbol') }} {{ number_format($total, 2) }}</th>
-                    <th>{{ config('settings.currency_symbol') }} {{ number_format($receivedAmount, 2) }}</th>
+                    <th>{{ number_format($total) }} {{ config('settings.currency_symbol') }}</th>
+                    <th>{{ number_format($receivedAmount) }} {{ config('settings.currency_symbol') }}</th>
                     <th></th>
                     <th></th>
                     <th></th>

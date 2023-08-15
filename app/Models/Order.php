@@ -43,7 +43,7 @@ class Order extends Model
 
     public function formattedTotal()
     {
-        return number_format($this->total(), 2);
+        return number_format($this->total());
     }
 
     public function receivedAmount()
@@ -55,6 +55,6 @@ class Order extends Model
 
     public function formattedReceivedAmount()
     {
-        return number_format($this->receivedAmount(), 2);
+        return number_format($this->receivedAmount());
     }
 }
