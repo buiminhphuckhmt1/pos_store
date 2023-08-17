@@ -15,7 +15,7 @@
             <div class="form-group mb-3">
                 <label for="name">Tên sản phẩm</label>
                 <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name"
-                    placeholder="Name" value="{{ old('name', $product->name) }}">
+                    placeholder="tên sản phẩm" value="{{ old('name', $product->name) }}">
                 @error('name')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -25,10 +25,10 @@
 
 
             <div class="form-group mb-3">
-                <label for="description">Mô tả</label>
-                <textarea name="description" class="form-control @error('description') is-invalid @enderror"
+                <label for="description">Đơn vị tính</label>
+                <input type="text" name="description" class="form-control @error('description') is-invalid @enderror"
                     id="description"
-                    placeholder="description">{{ old('description', $product->description) }}</textarea>
+                    placeholder="đơn vị tính" value="{{ old('description', $product->description) }}">
                 @error('description')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -64,7 +64,7 @@
             <div class="form-group mb-3">
                 <label for="barcode">Mã vạch</label>
                 <input type="text" name="barcode" class="form-control @error('barcode') is-invalid @enderror"
-                    id="barcode" placeholder="barcode" value="{{ old('barcode', $product->barcode) }}">
+                    id="barcode" placeholder="mã vạch" value="{{ old('barcode', $product->barcode) }}">
                 @error('barcode')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -75,7 +75,7 @@
             <div class="form-group mb-3">
                 <label for="price">Giá</label>
                 <input type="text" name="price" class="form-control @error('price') is-invalid @enderror" id="price"
-                    placeholder="price" value="{{ old('price', $product->price) }}">
+                    placeholder="giá" value="{{ old('price', $product->price) }}">
                 @error('price')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -97,8 +97,8 @@
             <div class="form-group mb-3">
                 <label for="status">Trạng thái</label>
                 <select name="status" class="form-control @error('status') is-invalid @enderror" id="status">
-                    <option value="1" {{ old('status', $product->status) === 1 ? 'selected' : ''}}>Active</option>
-                    <option value="0" {{ old('status', $product->status) === 0 ? 'selected' : ''}}>Inactive</option>
+                    <option value="1" {{ old('status', $product->status) === 1 ? 'selected' : ''}}>Hiện</option>
+                    <option value="0" {{ old('status', $product->status) === 0 ? 'selected' : ''}}>Ẩn</option>
                 </select>
                 @error('status')
                 <span class="invalid-feedback" role="alert">

@@ -41,9 +41,10 @@
             </thead>
             <tbody>
                 @foreach ($orders as $order)
+                
                 <tr>
                     <td>{{$order->id}}</td>
-                    <td>{{$order->getCustomerName()}}</td>
+                    <td><a href="{{ route('orders.show', $order) }}">{{$order->getCustomerName()}}</a></td>
                     <td>{{$order->formattedTotal()}} {{ config('settings.currency_symbol') }}</td>
                     <td>{{$order->formattedReceivedAmount()}} {{config('settings.currency_symbol') }}</td>
                     <td>

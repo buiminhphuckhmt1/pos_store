@@ -14,7 +14,7 @@
             <div class="form-group mb-3">
                 <label for="name">Tên sản phẩm</label>
                 <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name"
-                    placeholder="Name" value="{{ old('name') }}">
+                    placeholder="tên sản phẩm" value="{{ old('name') }}">
                 @error('name')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -25,8 +25,8 @@
 
             <div class="form-group mb-3">
                 <label for="description">Mô tả</label>
-                <textarea name="description" class="form-control @error('description') is-invalid @enderror"
-                    id="description" placeholder="description">{{ old('description') }}</textarea>
+                <input type="text" name="description" class="form-control @error('description') is-invalid @enderror"
+                    id="description" placeholder="đơn vị tính" value="{{ old('description') }}">
                 @error('description')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -61,7 +61,7 @@
             <div class="form-group mb-3">
                 <label for="barcode">Mã vạch</label>
                 <input type="text" name="barcode" class="form-control @error('barcode') is-invalid @enderror"
-                    id="barcode" placeholder="barcode" value="{{ old('barcode') }}">
+                    id="barcode" placeholder="mã vạch" value="{{ old('barcode') }}">
                 @error('barcode')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -72,7 +72,7 @@
             <div class="form-group mb-3">
                 <label for="price">Giá</label>
                 <input type="text" name="price" class="form-control @error('price') is-invalid @enderror" id="price"
-                    placeholder="price" value="{{ old('price') }}">
+                    placeholder="giá" value="{{ old('price') }}">
                 @error('price')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>

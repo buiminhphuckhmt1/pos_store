@@ -25,7 +25,14 @@ class Order extends Model
     {
         return $this->belongsTo(Customer::class);
     }
-
+    public function order_item()
+    {
+        return $this->belongsTo(OrderItem::class);
+    }
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
     public function getCustomerName()
     {
         if($this->customer) {

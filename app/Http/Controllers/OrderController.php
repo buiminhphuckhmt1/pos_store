@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderStoreRequest;
 use App\Models\Order;
+use App\Models\Customer;
+use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -17,7 +20,6 @@ class OrderController extends Controller
             $orders = $orders->where('created_at', '<=', $request->end_date . ' 23:59:59');
         }
         $orders = $orders->with(['items', 'payments', 'customer'])->latest()->paginate(10);
-
         $total = $orders->map(function($i) {
             return $i->total();
         })->sum();
@@ -51,5 +53,17 @@ class OrderController extends Controller
             'user_id' => $request->user()->id,
         ]);
         return 'success';
+    }
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Order  $order
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $Order = Order::where("id", $id)->first();
+        $orderitems = OrderItem::where("order_id", $Order->id)->get();
+        return view('orders.show', compact('Order','orderitems'));
     }
 }
