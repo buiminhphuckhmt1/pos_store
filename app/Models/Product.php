@@ -11,7 +11,8 @@ class Product extends Model
         'description',
         'image',
         'barcode',
-        'price',
+        'inputprice',
+        'outputprice',
         'quantity',
         'status'
     ];

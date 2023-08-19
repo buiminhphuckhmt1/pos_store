@@ -38,9 +38,22 @@ class Order extends Model
         if($this->customer) {
             return $this->customer->last_name;
         }
-        return 'Working Customer';
+        return 'Khách vãng lai';
     }
-
+    public function getCustomerAddress()
+    {
+        if($this->customer) {
+            return $this->customer->address;
+        }
+        return '';
+    }
+    public function getCustomerPhone()
+    {
+        if($this->customer) {
+            return $this->customer->phone;
+        }
+        return '';
+    }
     public function total()
     {
         return $this->items->map(function ($i){

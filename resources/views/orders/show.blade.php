@@ -17,10 +17,10 @@
         <div class="row">
             <div class="col-md-8">
                 <div>
-                    <h5>Tên khách hàng: <span class="text-uppercase h6">{{$Order->customer->first_name}}</span>
+                    <h5>Tên khách hàng: <span class="text-uppercase h6">{{$Order->getCustomerName()}}</span>
                     </h5>
-                    <h5>Địa chỉ: <span class="text-uppercase h6">{{$Order->customer->address}}</span></h2>
-                    <h5>Số điện thoại: <span class="text-uppercase h6">{{$Order->customer->phone}}</span></h3>
+                    <h5>Địa chỉ: <span class="text-uppercase h6">{{$Order->getCustomerAddress()}}</span></h2>
+                    <h5>Số điện thoại: <span class="text-uppercase h6">{{$Order->getCustomerPhone()}}</span></h3>
                 </div>
             </div>
             <div class="col-md-4 ">
@@ -48,7 +48,7 @@
                         <td class="d-flex justify-content-begin overflow-hidden">{{$orderItem->product->name}}</td>
                         <td class="">{{$orderItem->product->description}}</td>
                         <td class="">{{$orderItem->quantity}}</td>
-                        <td class="">{{number_format($orderItem->product->price)}}{{ config('settings.currency_symbol') }}</td>
+                        <td class="">{{number_format($orderItem->price/$orderItem->quantity)}}{{ config('settings.currency_symbol') }}</td>
                         <td class="d-flex justify-content-end">{{number_format($orderItem->price)}}{{ config('settings.currency_symbol') }}</td>
                     </tr>
                 @endforeach    
@@ -83,9 +83,13 @@
                     <div class="col d-flex align-items-center justify-content-end">{{number_format($Order->total() - $Order->receivedAmount())}} {{config('settings.currency_symbol')}}</div>
                 </div>
                 <div class="row  d-flex mb-1">
+                    <div class="p-3 col d-flex align-items-center justify-content-begin">Khách hàng</div>
                     <div class="col d-flex align-items-center justify-content-end">Người lập hóa đơn</div>
                 </div>
                 <div class="row p-3 d-flex mb-1 ">
+                    <div class="col p-0 d-flex align-items-center justify-content-begin">
+                        <h6>{{ $Order->getCustomerName() }}</h6>
+                    </div>
                     <div class="col d-flex align-items-center justify-content-end">
                         <h6>{{ auth()->user()->getFullname() }}</h6>
                     </div>

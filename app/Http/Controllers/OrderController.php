@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Dompdf\Dompdf;
 
 class OrderController extends Controller
 {
@@ -40,7 +41,7 @@ class OrderController extends Controller
         $cart = $request->user()->cart()->get();
         foreach ($cart as $item) {
             $order->items()->create([
-                'price' => $item->price * $item->pivot->quantity,
+                'price' => $item->outputprice * $item->pivot->quantity,
                 'quantity' => $item->pivot->quantity,
                 'product_id' => $item->id,
             ]);
@@ -65,5 +66,20 @@ class OrderController extends Controller
         $Order = Order::where("id", $id)->first();
         $orderitems = OrderItem::where("order_id", $Order->id)->get();
         return view('orders.show', compact('Order','orderitems'));
+    }
+    public function printforder()
+    {
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml('orders.show');
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream();
     }
 }

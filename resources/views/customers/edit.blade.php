@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Update Customer')
-@section('content-header', 'Update Customer')
+@section('title', 'Cập nhật thông tin khách hàng')
+@section('content-header', 'Cập nhật thông tin khách hàng')
 
 @section('content')
 
@@ -14,10 +14,10 @@
 
 
                 <div class="form-group">
-                    <label for="last_name">Last Name</label>
+                    <label for="last_name">Họ và tên</label>
                     <input type="text" name="last_name" class="form-control @error('last_name') is-invalid @enderror"
                            id="last_name"
-                           placeholder="Last Name" value="{{ old('last_name', $customer->last_name) }}">
+                           placeholder="Họ và tên" value="{{ old('last_name', $customer->last_name) }}">
                     @error('last_name')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -26,20 +26,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="text" name="email" class="form-control @error('email') is-invalid @enderror" id="email"
-                           placeholder="Email" value="{{ old('email', $customer->email) }}">
-                    @error('email')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">Phone</label>
+                    <label for="phone">SĐT</label>
                     <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" id="phone"
-                           placeholder="Phone" value="{{ old('phone', $customer->phone) }}">
+                           placeholder="Số điện thoại" value="{{ old('phone', $customer->phone) }}">
                     @error('phone')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -48,10 +37,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="address">Address</label>
+                    <label for="address">Địa chỉ</label>
                     <input type="text" name="address" class="form-control @error('address') is-invalid @enderror"
                            id="address"
-                           placeholder="Address" value="{{ old('address', $customer->address) }}">
+                           placeholder="Địa chỉ" value="{{ old('address', $customer->address) }}">
                     @error('address')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -59,21 +48,7 @@
                     @enderror
                 </div>
 
-                <div class="form-group">
-                    <label for="avatar">Avatar</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="avatar" id="avatar">
-                        <label class="custom-file-label" for="avatar">Choose file</label>
-                    </div>
-                    @error('avatar')
-                    <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                    @enderror
-                </div>
-
-
-                <button class="btn btn-primary" type="submit">Update</button>
+                <button class="btn btn-primary mt-3" type="submit">Cập nhật</button>
             </form>
         </div>
     </div>

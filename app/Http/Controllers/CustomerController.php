@@ -44,25 +44,17 @@ class CustomerController extends Controller
      */
     public function store(CustomerStoreRequest $request)
     {
-        $avatar_path = '';
-
-        if ($request->hasFile('avatar')) {
-            $avatar_path = $request->file('avatar')->store('customers', 'public');
-        }
-
         $customer = Customer::create([
             'last_name' => $request->last_name,
-            'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
-            'avatar' => $avatar_path,
             'user_id' => $request->user()->id,
         ]);
 
         if (!$customer) {
-            return redirect()->back()->with('error', 'Sorry, there\'re a problem while creating customer.');
+            return redirect()->back()->with('Lỗi', 'Xin lỗi đã gặp vấn đề trong lúc tạo khách hàng mới.');
         }
-        return redirect()->route('customers.index')->with('success', 'Success, your customer have been created.');
+        return redirect()->route('customers.index')->with('Thành công', 'Đã tạo khách hàng mới thành công.');
     }
 
     /**
@@ -96,33 +88,18 @@ class CustomerController extends Controller
     public function update(Request $request, Customer $customer)
     {
         $customer->last_name = $request->last_name;
-        $customer->email = $request->email;
         $customer->phone = $request->phone;
         $customer->address = $request->address;
 
-        if ($request->hasFile('avatar')) {
-            // Delete old avatar
-            if ($customer->avatar) {
-                Storage::delete($customer->avatar);
-            }
-            // Store avatar
-            $avatar_path = $request->file('avatar')->store('customers', 'public');
-            // Save to Database
-            $customer->avatar = $avatar_path;
-        }
 
         if (!$customer->save()) {
-            return redirect()->back()->with('error', 'Sorry, there\'re a problem while updating customer.');
+            return redirect()->back()->with('Lỗi', 'Xin lỗi, đã gặp vấn đền trong lúc cập nhật khách hàng.');
         }
-        return redirect()->route('customers.index')->with('success', 'Success, your customer have been updated.');
+        return redirect()->route('customers.index')->with('Thành công', 'Đã cập nhật thông tin khách hàng thành công.');
     }
 
     public function destroy(Customer $customer)
     {
-        if ($customer->avatar) {
-            Storage::delete($customer->avatar);
-        }
-
         $customer->delete();
 
        return response()->json([

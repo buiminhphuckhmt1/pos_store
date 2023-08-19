@@ -70,10 +70,21 @@
             </div>
 
             <div class="form-group mb-3">
-                <label for="price">Giá</label>
-                <input type="text" name="price" class="form-control @error('price') is-invalid @enderror" id="price"
-                    placeholder="giá" value="{{ old('price') }}">
-                @error('price')
+                <label for="inputprice">Giá nhập</label>
+                <input type="text" name="inputprice" class="form-control @error('inputprice') is-invalid @enderror" id="inputprice"
+                    placeholder="giá nhập" value="{{ old('inputprice') }}">
+                @error('inputprice')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="outputprice">Giá bán</label>
+                <input type="text" name="outputprice" class="form-control @error('outputprice') is-invalid @enderror" id="outputprice"
+                    placeholder="giá bán" value="{{ old('outputprice') }}">
+                @error('outputprice')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>

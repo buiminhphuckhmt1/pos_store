@@ -69596,7 +69596,7 @@ var Cart = /*#__PURE__*/function (_Component) {
     key: "getTotal",
     value: function getTotal(cart) {
       var total = cart.map(function (c) {
-        return c.pivot.quantity * c.price;
+        return c.pivot.quantity * c.outputprice;
       });
       return Object(lodash__WEBPACK_IMPORTED_MODULE_4__["sum"])(total).toFixed(2);
     }
@@ -69799,7 +69799,7 @@ var Cart = /*#__PURE__*/function (_Component) {
           className: "fas fa-trash"
         }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
           className: "text-right"
-        }, window.APP.currency_symbol, " ", (c.price * c.pivot.quantity)));
+        }, window.APP.currency_symbol, " ", (c.outputprice * c.pivot.quantity)));
       }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {

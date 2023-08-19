@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Create Customer')
-@section('content-header', 'Create Customer')
+@section('title', 'Thêm khách hàng')
+@section('content-header', 'Thêm khách hàng')
 
 @section('content')
 
@@ -12,10 +12,10 @@
                 @csrf
 
                 <div class="form-group">
-                    <label for="last_name">Last Name</label>
+                    <label for="last_name">Họ và tên</label>
                     <input type="text" name="last_name" class="form-control @error('last_name') is-invalid @enderror"
                            id="last_name"
-                           placeholder="Last Name" value="{{ old('last_name') }}">
+                           placeholder="Họ và tên" value="{{ old('last_name') }}">
                     @error('last_name')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -24,20 +24,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="text" name="email" class="form-control @error('email') is-invalid @enderror" id="email"
-                           placeholder="Email" value="{{ old('email') }}">
-                    @error('email')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">Phone</label>
+                    <label for="phone">Số điên thoại</label>
                     <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" id="phone"
-                           placeholder="Phone" value="{{ old('phone') }}">
+                           placeholder="Số đien thoại" value="{{ old('phone') }}">
                     @error('phone')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -46,32 +35,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="address">Address</label>
+                    <label for="address">Địa chỉ</label>
                     <input type="text" name="address" class="form-control @error('address') is-invalid @enderror"
                            id="address"
-                           placeholder="Address" value="{{ old('address') }}">
+                           placeholder="Địa chỉ" value="{{ old('address') }}">
                     @error('address')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
                 </div>
-
-                <div class="form-group">
-                    <label for="avatar">Avatar</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="avatar" id="avatar">
-                        <label class="custom-file-label" for="avatar">Choose file</label>
-                    </div>
-                    @error('avatar')
-                    <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                    @enderror
-                </div>
-
-
-                <button class="btn btn-primary" type="submit">Create</button>
+                <button class="btn btn-primary mt-3" type="submit">Tạo</button>
             </form>
         </div>
     </div>

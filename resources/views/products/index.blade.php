@@ -4,7 +4,8 @@
 @section('content-header', 'Danh sách sản phẩm')
 @section('content-actions')
 <a href="{{route('products.create')}}" class="btn btn-primary">Tạo sản phẩm mới</a>
-<a href="{{route('export.export')}}" class="btn btn-primary">Xuất file excel</a>
+<a href="{{route('export.export')}}" class="btn btn-primary"><i class='bx bxs-download'></i> Xuất file excel</a>
+<a href="" class="btn btn-primary"><i class='bx bx-up-arrow-alt' ></i> Nhập file excel</a>
 @endsection
 @section('css')
 <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
@@ -28,7 +29,7 @@
             </thead>
             <tbody>
                 @foreach ($products as $product)
-                <tr>
+                <tr style="text-align: center;">
                     <td>{{$product->id}}</td>
                     <td>{{$product->name}}</td>
                     <td>
@@ -39,7 +40,7 @@
                         </ul>                        
                     </td>                    
                     <td>{{$product->barcode}}</td>
-                    <td>{{$product->price}}</td>
+                    <td>{{ number_format($product->outputprice) }} {{ config('settings.currency_symbol') }}</td>
                     <td>{{$product->quantity}}</td>
                     <td>
                     @if ($product->status == 1)
@@ -57,7 +58,7 @@
                               <i class="bx bx-dots-vertical-rounded"></i>
                             </button>
                             <div class="dropdown-menu">
-                              <a class="dropdown-item" href="{{ route('products.edit', $product) }}"><i class="bx bx-edit-alt me-1"></i> Sửa</a>
+                              <a class="dropdown-item" href="{{ route('products.edit', $product) }}" onclick="return window.confirm('Bạn có xác nhận sửa không');"><i class="bx bx-edit-alt me-1"></i> Sửa</a>
                               <a class="dropdown-item" href="{{route('products.destroy', $product)}}" onclick="return window.confirm('Bạn có xác nhận xóa không');"><i class="bx bx-trash me-1"></i> Xóa</a>
                             </div>
                         </div>

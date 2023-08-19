@@ -73,10 +73,21 @@
             </div>
 
             <div class="form-group mb-3">
-                <label for="price">Giá</label>
-                <input type="text" name="price" class="form-control @error('price') is-invalid @enderror" id="price"
-                    placeholder="giá" value="{{ old('price', $product->price) }}">
-                @error('price')
+                <label for="inputprice">Giá nhập</label>
+                <input type="text" name="inputprice" class="form-control @error('inputprice') is-invalid @enderror" id="inputprice"
+                    placeholder="giá nhập" value="{{ old('inputprice',$product->inputprice) }}">
+                @error('inputprice')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="outputprice">Giá bán</label>
+                <input type="text" name="outputprice" class="form-control @error('outputprice') is-invalid @enderror" id="outputprice"
+                    placeholder="giá bán" value="{{ old('outputprice',$product->outputprice) }}">
+                @error('outputprice')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -107,7 +118,7 @@
                 @enderror
             </div>
 
-            <button class="btn btn-primary" type="submit">Cập nhật</button>
+            <button class="btn btn-primary" onclick="return window.confirm('Bạn có xác nhận sửa không');" type="submit">Cập nhật</button>
         </form>
     </div>
 </div>
