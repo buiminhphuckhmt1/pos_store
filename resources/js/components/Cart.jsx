@@ -100,7 +100,7 @@ class Cart extends Component {
 
     getTotal(cart) {
         const total = cart.map((c) => c.pivot.quantity * c.outputprice);
-        return sum(total).toFixed(2);
+        return sum(total);
     }
     handleClickDelete(product_id) {
         axios
@@ -175,11 +175,12 @@ class Cart extends Component {
     }
     handleClickSubmit() {
         Swal.fire({
-            title: "Received Amount",
+            title: "Tạo Hóa đơn",
             input: "text",
+
             inputValue: this.getTotal(this.state.cart),
             showCancelButton: true,
-            confirmButtonText: "Send",
+            confirmButtonText: "Gửi",
             showLoaderOnConfirm: true,
             preConfirm: (amount) => {
                 return axios
@@ -219,7 +220,7 @@ class Cart extends Component {
                                 />
                             </form>
                         </div>
-                        <div className="col">
+                        <div className="col d-flex ">
                             <select
                                 className="form-control"
                                 onChange={this.setCustomerId}
@@ -232,10 +233,16 @@ class Cart extends Component {
                                     >{`${cus.last_name}`}</option>
                                 ))}
                             </select>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary">
+                                    <span><i class='bx bx-user-plus'></i></span>
+                                </button>
+                            </div>
                         </div>
+
                     </div>
                     <div className="user-cart mb-1">
-                        <div className="card h-px-600">
+                        <div className="card vh-42 overflow-auto">
                             <table className="table table-striped ">
                                 <thead>
                                     <tr>
@@ -346,28 +353,29 @@ class Cart extends Component {
                     </div>
                     <div className="order-product">
                         <div className="row">
-                            
+                           
+                        <div class="col-md-12 d-flex flex-row flex-wrap bd-highlight list-item mt-2 overflow-auto vh-100">
                             {products.map((p) => (
-                            <div
-                                onClick={() => this.addProductToCart(p.barcode)}
-                                key={p.id}
-                                className="col-lg-2 col-md-6 col-12 mb-4 text-center"
-                            >
-                                <div class="item border-black border-1">
-                                <img src={p.image_url} class="d-block " height="80" width="80" alt="" />
-                                <h6 class=""
-                                    style={
-                                        window.APP.warning_quantity > p.quantity
-                                            ? { color: "red" }
-                                            : {}
-                                    }
-                                >
-                                    {p.name}({p.quantity})
-                                </h6>
+                                <div class="col-lg-3 col-md-6 col-12 p-1">
+                            <div onClick={() => this.addProductToCart(p.barcode)}
+                            key={p.id} class="card overflow-hidden bd-highlight">
+                                <div class="list-thumb d-flex  justify-content-center">
+                                    <img src={p.image_url} height="100px" width="100%"/>
+                                </div> 
+                                <div class="flex-grow-1 d-bock">
+                                    <div class="card-body align-self-center d-flex flex-column justify-content-between align-items-lg-center">
+                                        <div class="w-40 w-sm-100 item-title">{p.name}</div> 
+                                        <p class="text-muted text-small w-15 w-sm-100 mb-1">{p.barcode}</p>
+                                        <span class="text-muted text-small w-sm-100">{p.outputprice}{window.APP.currency_symbol}</span>  
+                                        <p class="position-absolute m-0 text-muted text-small w-15 w-sm-100 d-none d-lg-block item-badges top-1 right-1" >
+                                            <span class="badge bg-label-primary me-1">{p.quantity} {p.description}</span>
+                                        </p>                                    
+                                    </div>
+                                </div>
                                 </div>
                             </div>
-                        ))}
-                            
+                            ))}
+                        </div>
                         </div>
                     </div>
                 </div>

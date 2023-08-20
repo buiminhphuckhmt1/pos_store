@@ -9241,9 +9241,20 @@ button.list-group-item-gray.active {
 .vh-100 {
   height: 100vh !important;
 }
-
+.vh-42 {
+  height: 60vh !important;
+}
+.top-1{
+  top:10px !important;
+}
+.right-1{
+  right:10px !important;
+}
 .min-vh-100 {
   min-height: 100vh !important;
+}
+.min-vh-42 {
+  min-height: 42vh !important;
 }
 .min-vh-20 {
   min-height: 20vh !important;

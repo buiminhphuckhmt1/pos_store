@@ -69598,7 +69598,7 @@ var Cart = /*#__PURE__*/function (_Component) {
       var total = cart.map(function (c) {
         return c.pivot.quantity * c.outputprice;
       });
-      return Object(lodash__WEBPACK_IMPORTED_MODULE_4__["sum"])(total).toFixed(2);
+      return Object(lodash__WEBPACK_IMPORTED_MODULE_4__["sum"])(total);
     }
   }, {
     key: "handleClickDelete",
