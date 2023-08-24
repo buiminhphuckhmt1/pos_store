@@ -16,7 +16,20 @@ class CartController extends Controller
         }
         return view('cart.index');
     }
+    public function storecus(CustomerStoreRequest $request)
+    {
+        $customer = Customer::create([
+            'last_name' => $request->last_name,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'user_id' => $request->user()->id,
+        ]);
 
+        if (!$customer) {
+            return redirect()->back()->with('Lỗi', 'Xin lỗi đã gặp vấn đề trong lúc tạo khách hàng mới.');
+        }
+        return redirect()->route('customers.index')->with('Thành công', 'Đã tạo khách hàng mới thành công.');
+    }
     public function store(Request $request)
     {
         $request->validate([

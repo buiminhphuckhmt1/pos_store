@@ -64,8 +64,11 @@
             <!-- Content Header (Page header) -->
             <section class="content">
                 <div class="container-xxl flex-grow-1 container-p-y">
-                    <h4>@yield('content-header')</h4>
-                    <h3>@yield('content-actions')</h3>
+            <a href="{{ url('admin/orders') }}" class="app-brand-link">
+                <button type="button" class="btn btn-primary mb-1">
+                    <span><i class='bx bx-arrow-back'></i></span>
+                </button>
+            </a>
                     @include('layouts.partials.alert.success')
                     @include('layouts.partials.alert.error')
                     @yield('content')

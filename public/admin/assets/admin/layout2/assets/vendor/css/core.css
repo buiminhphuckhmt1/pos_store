@@ -9977,6 +9977,10 @@ button.list-group-item-gray.active {
   text-transform: capitalize !important;
 }
 
+.text-capitalize-1:first-letter {
+  text-transform: capitalize !important;
+}
+
 .text-wrap {
   white-space: normal !important;
 }
@@ -10060,6 +10064,14 @@ button.list-group-item-gray.active {
 .text-black-50 {
   --bs-text-opacity: 1;
   color: rgba(67, 89, 113, 0.5) !important;
+}
+
+.ct-inline{
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 0;
 }
 
 .text-white-50 {

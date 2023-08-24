@@ -132,7 +132,7 @@ a.bg-primary:hover, a.bg-primary:focus {
 .pagination li.active > a:not(.page-link),
 .pagination li.active > a:not(.page-link):hover,
 .pagination li.active > a:not(.page-link):focus {
-  font-size: 10px;
+  font-size: 14px;
   /*border-color: #696cff;*/
   background-color: #696cff;
   color: #fff;
