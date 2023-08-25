@@ -59,7 +59,7 @@
                               <i class="bx bx-dots-vertical-rounded"></i>
                             </button>
                             <div class="dropdown-menu">
-                              <a class="dropdown-item btn-delete" href="{{ route('products.edit', $product) }}"><i class="bx bx-edit-alt me-1"></i> Sửa</a>
+                              <a class="dropdown-item btn-edit" data-url="{{ route('products.edit', $product) }}"><i class="bx bx-edit-alt me-1"></i> Sửa</a>
                               <button class="dropdown-item btn-delete" data-url="{{route('products.destroy', $product)}}"><i class="bx bx-trash me-1"></i> Xóa</button>
                             </div>
                         </div>
@@ -71,41 +71,4 @@
         {{ $products->render() }}
     </div>
 </div>
-@endsection
-@section('js')
-<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.all.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $(document).on('click', '.btn-delete', function () {
-            $this = $(this);
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                title: 'Are you sure?',
-                text: "Do you really want to delete this product?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No',
-                reverseButtons: true
-                }).then((result) => {
-                if (result.value) {
-                    $.post($this.data('url'), {_method: 'DELETE', _token: '{{csrf_token()}}'}, function (res) {
-                        $this.closest('tr').fadeOut(500, function () {
-                            $(this).remove();
-                        })
-                    })
-                }
-            })
-        })
-    })
-</script>
 @endsection

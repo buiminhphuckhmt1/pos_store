@@ -169,6 +169,7 @@
     <script src="{{ asset('admin/assets/admin/layout2/assets/vendor/libs/popper/popper.js') }}"></script>
     <script src="{{ asset('admin/assets/admin/layout2/assets/vendor/js/bootstrap.js') }}"></script>
     <script src="{{ asset('admin/assets/admin/layout2/js/adminlte.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/admin/layout2/js/jQuery.print.js') }}"></script>
     <script src="{{ asset('admin/assets/admin/layout2/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
 
     <script src="{{ asset('admin/assets/admin/layout2/assets/vendor/js/menu.js') }}"></script>
@@ -182,6 +183,80 @@
     <!-- Page JS -->
     <!-- <script src="{{ asset('admin/assets/admin/layout2/assets/js/dashboards-analytics.js') }}"></script> -->
     <script src="{{ asset('admin/assets/admin/layout2/assets/js/pages-account-settings-account.js') }}"></script>
+    <script type="text/javascript">
+                        function printData()
+                        {
+                            var divToPrint=document.getElementById("printTable");
+                            newWin=  window.open("", "PrintWindow", "width=800,height=600");
+                            newWin.document.write(divToPrint.outerHTML);
+                            newWin.print();
+                            newWin.close();
+                        }
+
+                        $('.btnprn').on('click',function(){
+                        printData();
+                        })
+                        </script>
+                        <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.all.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(document).on('click', '.btn-delete', function () {
+            $this = $(this);
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+                })
+
+                swalWithBootstrapButtons.fire({
+                title: 'Bạn có chắc?',
+                text: "Bạn thật sự muốn xóa sản phẩm này?",
+                icon: 'Cảnh báo',
+                showCancelButton: true,
+                confirmButtonText: 'Vâng, xóa nó!',
+                cancelButtonText: 'Không',
+                reverseButtons: true
+                }).then((result) => {
+                if (result.value) {
+                    $.post($this.data('url'), {_method: 'DELETE', _token: '{{csrf_token()}}'}, function (res) {
+                        $this.closest('tr').fadeOut(500, function () {
+                            $(this).remove();
+                        })
+                    })
+                }
+            })
+        })
+        $(document).on('click', '.btn-edit', function () {
+            $this = $(this);
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+                })
+
+                swalWithBootstrapButtons.fire({
+                title: 'Bạn có chắc?',
+                text: "Bạn thật sự muốn sửa sản phẩm này?",
+                icon: 'Cảnh báo',
+                showCancelButton: true,
+                confirmButtonText: 'Có,sửa nó!',
+                showLoaderOnConfirm: true,
+                cancelButtonText: 'Không',
+                reverseButtons: true
+                }).then((result) => {
+                  if (result.value) {
+                    window.location = $this.data('url');
+                }
+        });
+                })
+    })
+</script>
 </body>
 
 </html>

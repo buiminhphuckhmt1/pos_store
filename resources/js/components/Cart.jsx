@@ -12,14 +12,17 @@ class Cart extends Component {
             products: [],
             customers: [],
             barcode: "",
-            discount: "0",
+            discount: 0,
             search: "",
             customer_id: "",
+            total: 0,
+            totalBill: 0
         };
 
         this.loadCart = this.loadCart.bind(this);
         this.handleOnChangeBarcode = this.handleOnChangeBarcode.bind(this);
         this.handleScanBarcode = this.handleScanBarcode.bind(this);
+        this.handleClickadd = this.handleClickadd.bind(this);
         this.handleOnChangeDisscount = this.handleOnChangeDisscount.bind(this);
         this.handleChangeQty = this.handleChangeQty.bind(this);
         this.handleEmptyCart = this.handleEmptyCart.bind(this);
@@ -29,7 +32,6 @@ class Cart extends Component {
         this.handleSeach = this.handleSeach.bind(this);
         this.setCustomerId = this.setCustomerId.bind(this);
         this.handleClickSubmit = this.handleClickSubmit.bind(this);
-        this.handleClickadd = this.handleClickadd.bind(this);
     }
 
     componentDidMount() {
@@ -64,6 +66,34 @@ class Cart extends Component {
         axios.get("/admin/cart").then((res) => {
             const cart = res.data;
             this.setState({ cart });
+        });
+    }
+    handleClickadd() {
+        Swal.fire({
+            title: "Tạo Khách hàng mới",
+            html:'<p>Họ Và Tên:</p>'+'<input id="swal-input1" class="swal2-input">' +
+                 '<p>Số Điện Thoại:</p>'+'<input id="swal-input2" class="swal2-input">' +
+                 '<p>Địa chỉ:</p>'+'<input id="swal-input3" class="swal2-input">',
+            showCancelButton: true,
+            cancelButtonText: "Hủy",
+            confirmButtonText: "Tạo",
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                let data = {
+                    'last_name' : $('#swal-input1').val(),
+                    'phone' : $('#swal-input2').val(),
+                    'address' : $('#swal-input3').val()
+                };
+                return axios
+                    .post("/admin/customers", data)
+                    .then((res) => {
+                     window.alert(`Create user ${res?.data[-1]?.last_name} success`);
+                    })
+                    .catch((err) => {
+                        Swal.showValidationMessage(err.response.data.message);
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
         });
     }
 
@@ -103,11 +133,12 @@ class Cart extends Component {
     handleOnChangeDisscount(event) {
         const discount = event.target.value;
         console.log(discount);
-        return discount;
+        this.setState({discount: parseFloat(discount)});
     }
     getTotal(cart) {
-        const total = cart.map((c) => c.pivot.quantity * c.outputprice);
-        return sum(total);
+        let total = sum(cart.map((c) => c.pivot.quantity * c.outputprice));
+        // this.setState({total: parseFloat(total)});
+        return total;
     }
     handleClickDelete(product_id) {
         axios
@@ -164,7 +195,7 @@ class Cart extends Component {
                     this.setState({ cart: [...this.state.cart, product] });
                 }
             }
-
+            
             axios
                 .post("/admin/cart", { barcode })
                 .then((res) => {
@@ -185,7 +216,7 @@ class Cart extends Component {
             title: "Tạo Hóa đơn",
             html:'<p>Số tiền nhận được</p>',
             input: "text",
-            inputValue: this.getTotal(this.state.cart),
+            inputValue: this.state.totalBill,
             showCancelButton: true,
             cancelButtonText: "Hủy",
             confirmButtonText: "Tạo",
@@ -197,8 +228,13 @@ class Cart extends Component {
                         amount,
                     })
                     .then((res) => {
-                        this.loadCart();
-                        return res.data;
+                        const divToPrint=document.getElementById("printTable");
+                        const    newWin=  window.open("", "PrintWindow", "width=800,height=600");
+                            newWin.document.write(divToPrint.outerHTML);
+                            newWin.print();
+                            newWin.close();
+                        // this.loadCart();
+                        // return res.data;
                     })
                     .catch((err) => {
                         Swal.showValidationMessage(err.response.data.message);
@@ -211,40 +247,30 @@ class Cart extends Component {
             }
         });
     }
-    handleClickadd() {
-        Swal.fire({
-            title: "Tạo Khách hàng mới",
-            html:'<p>Họ Và Tên:</p>'+'<input id="swal-input1" class="swal2-input">' +
-                 '<p>Số Điện Thoại:</p>'+'<input id="swal-input2" class="swal2-input">' +
-                 '<p>Địa chỉ:</p>'+'<input id="swal-input3" class="swal2-input">',
-            showCancelButton: true,
-            cancelButtonText: "Hủy",
-            confirmButtonText: "Tạo",
-            showLoaderOnConfirm: true,
-            preConfirm: function () {
-                return new Promise(function (resolve) {
-                    resolve([
-                      $('#swal-input1').val(),
-                      $('#swal-input2').val(),
-                      $('#swal-input3').val()
-                    ])
-                  })
-                    .catch((err) => {
-                        Swal.showValidationMessage(err.response.data.message);
-                    });
-            },
-            allowOutsideClick: () => !Swal.isLoading(),
-        }).then((result) => {
-            if (result.value) {
-                //
-            }
+    componentDidUpdate(prevProps, prevState) {
+        // Kiểm tra nếu giỏ hàng, giảm giá, hoặc giá sản phẩm thay đổi
+        if (
+          prevState.cart !== this.state.cart ||
+          prevState.discount !== this.state.discount ||
+          prevState.products !== this.state.products
+        ) {
+          this.calculateTotalBill();
+        }
+      }
+      calculateTotalBill = () =>{
+        let total = sum(this.state.cart.map((c) => c.pivot.quantity * c.outputprice));
+        let totalBill = total - this.state.discount;
+        totalBill = totalBill>0? totalBill: 0;
+        this.setState({
+            total: total,
+            totalBill: totalBill
         });
-    }
+      }
     render() {
         const { cart, products, customers, barcode } = this.state;
         return (
             <div className="row">
-                <div className="col-md-6 col-lg-4">
+                <div className="col-md-6 col-lg-4" id="printTable">
                     <div className="row mb-2">
                         <div className="col">
                             <form onSubmit={this.handleScanBarcode}>
@@ -274,7 +300,6 @@ class Cart extends Component {
                                 <button 
                                 type="button" 
                                 class="btn btn-primary"
-                                disabled={!cart.length}
                                 onClick={this.handleClickadd}
                                 >
                                     <span><i class='bx bx-user-plus'></i></span>
@@ -340,7 +365,7 @@ class Cart extends Component {
                     <div className="row d-flex mb-1">
                         <div className="col">Tổng tiền:</div>
                         <div className="col d-flex align-items-center justify-content-end">
-                             {this.getTotal(cart)} {window.APP.currency_symbol}
+                            {this.state.total}  {window.APP.currency_symbol}
                         </div>
                     </div>
                     <div className="row d-flex mb-1">
@@ -358,7 +383,7 @@ class Cart extends Component {
                     <div className="row d-flex mb-1">
                         <div className="col">Thành tiền:</div>
                         <div className="col d-flex align-items-center justify-content-end">
-                             {this.getTotal(cart)} {window.APP.currency_symbol}
+                             {this.state.totalBill} {window.APP.currency_symbol}
                         </div>
                     </div>
                     <div className="row mt-3">
