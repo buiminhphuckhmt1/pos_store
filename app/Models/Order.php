@@ -72,7 +72,16 @@ class Order extends Model
             return $i->amount;
         })->sum();
     }
-
+    public function receivedDiscount()
+    {
+        return $this->payments->map(function ($i){
+            return $i->discount;
+        })->sum();
+    }
+    public function formattedReceivedDiscount()
+    {
+        return number_format($this->receivedDiscount());
+    }
     public function formattedReceivedAmount()
     {
         return number_format($this->receivedAmount());

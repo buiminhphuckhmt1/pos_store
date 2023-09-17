@@ -225,6 +225,7 @@ class Cart extends Component {
                 return axios
                     .post("/admin/orders", {
                         customer_id: this.state.customer_id,
+                        discount: this.state.discount,
                         amount,
                     })
                     .then((res) => {

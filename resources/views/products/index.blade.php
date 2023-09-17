@@ -3,7 +3,7 @@
 @section('title', 'Danh sách sản phẩm')
 @section('content-header', 'Danh sách sản phẩm')
 @section('content-actions')
-<a href="{{route('products.create')}}" class="btn btn-primary">Tạo sản phẩm mới</a>
+<a href="{{route('products.create')}}" class="btn btn-primary"><i class='bx bx-add-to-queue' ></i> Tạo sản phẩm mới</a>
 <a href="{{route('export.export')}}" class="btn btn-primary"><i class='bx bxs-download'></i> Xuất file excel</a>
 <a href="" class="btn btn-primary"><i class='bx bx-up-arrow-alt' ></i> Nhập file excel</a>
 @endsection

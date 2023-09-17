@@ -3,7 +3,7 @@
 @section('title', 'Danh sách hóa đơn')
 @section('content-header', 'Danh sách hóa đơn')
 @section('content-actions')
-    <a href="{{route('cart.index')}}" class="btn btn-primary">Tạo hóa đơn</a>
+    <a href="{{route('cart.index')}}" class="btn btn-primary"><i class='bx bx-barcode-reader'></i> Tạo hóa đơn</a>
 @endsection
 
 @section('content')
@@ -45,16 +45,16 @@
                 <tr>
                     <td>{{$order->id}}</td>
                     <td><a href="{{ route('orders.show', $order) }}">{{$order->getCustomerName()}}</a></td>
-                    <td>{{$order->formattedTotal()}} {{ config('settings.currency_symbol') }}</td>
+                    <td>{{number_format($order->total()-$order->receivedDiscount())}} {{ config('settings.currency_symbol') }}</td>
                     <td>{{$order->formattedReceivedAmount()}} {{config('settings.currency_symbol') }}</td>
                     <td>
                         @if($order->receivedAmount() == 0)
                             <span class="badge bg-label-danger me-1">NỢ</span>
-                        @elseif($order->receivedAmount() < $order->total())
+                        @elseif($order->receivedAmount() < $order->total()-$order->receivedDiscount())
                             <span class="badge bg-label-warning me-1">MỘT PHẦN</span>
-                        @elseif($order->receivedAmount() == $order->total())
+                        @elseif($order->receivedAmount() == $order->total()-$order->receivedDiscount())
                             <span class="badge bg-label-success me-1">TRẢ ĐỦ</span>
-                        @elseif($order->receivedAmount() > $order->total())
+                        @elseif($order->receivedAmount() > $order->total()-$order->receivedDiscount())
                             <span class="badge bg-label-info me-1">DƯ</span>
                         @endif
                     </td>

@@ -43,7 +43,7 @@ class CartController extends Controller
             // check product quantity
             if ($product->quantity <= $cart->pivot->quantity) {
                 return response([
-                    'message' => 'Product available only: ' . $product->quantity,
+                    'message' => 'Sản phẩm có sẵn: ' . $product->quantity,
                 ], 400);
             }
             // update only quantity
@@ -52,7 +52,7 @@ class CartController extends Controller
         } else {
             if ($product->quantity < 1) {
                 return response([
-                    'message' => 'Product out of stock',
+                    'message' => 'Sản phẩm đã hết',
                 ], 400);
             }
             $request->user()->cart()->attach($product->id, ['quantity' => 1]);
@@ -75,7 +75,7 @@ class CartController extends Controller
             // check product quantity
             if ($product->quantity < $request->quantity) {
                 return response([
-                    'message' => 'Product available only: ' . $product->quantity,
+                    'message' => 'Sản phẩm có sẵn: ' . $product->quantity,
                 ], 400);
             }
             $cart->pivot->quantity = $request->quantity;

@@ -69,7 +69,7 @@
               </div>
               <!-- /Logo -->
               <!-- <h4 class="mb-2">Welcome 👋</h4> -->
-              <p class="mb-4">Vui lòng đăng nhập vào tài khoản của bạn và bắt đầu thảo luận</p>
+              <p class="mb-4">Vui lòng đăng nhập vào tài khoản của bạn và bắt đầu sử dụng</p>
               @if(Request::get("notify") == "invalid")
 				<div class="alert alert-danger">Hãy kiểm tra lại tài khoản và mật khẩu!</div>
 				@endif
@@ -110,4 +110,5 @@
         </div>
       </div>
     </div>
+
 @endsection

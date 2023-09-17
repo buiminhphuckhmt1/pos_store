@@ -27,8 +27,11 @@ class OrderController extends Controller
         $receivedAmount = $orders->map(function($i) {
             return $i->receivedAmount();
         })->sum();
+        $receivedDiscount = $orders->map(function($i) {
+            return $i->receivedDiscount();
+        })->sum();
 
-        return view('orders.index', compact('orders', 'total', 'receivedAmount'));
+        return view('orders.index', compact('orders', 'total', 'receivedAmount','receivedDiscount'));
     }
 
     public function store(OrderStoreRequest $request)
@@ -51,6 +54,7 @@ class OrderController extends Controller
         $request->user()->cart()->detach();
         $order->payments()->create([
             'amount' => $request->amount,
+            'discount' => $request->discount,
             'user_id' => $request->user()->id,
         ]);
         return 'success';
