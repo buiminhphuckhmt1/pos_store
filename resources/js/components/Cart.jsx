@@ -232,6 +232,7 @@ class Cart extends Component {
                         customer_id: this.state.customer_id,
                         discount: this.state.discount,
                         amount,
+                        
                     })
                     .then((res) => {
                         const divToPrint=document.getElementById("printTable");
@@ -309,8 +310,8 @@ class Cart extends Component {
                                             <th width="30%"></th>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td><h1></h1></td>
+                                            <tr>                                        
+                                                <td><h1>{customers.last_name}</h1></td>                                         
                                                 <td class="d-flex justify-content-end"> <h2>No:/</h2></td>
                                             </tr>
                                             <tr>
@@ -344,8 +345,8 @@ class Cart extends Component {
                                             <td class="d-flex justify-content-begin overflow-hidden"><h2>{c.name}</h2></td>
                                             <th class=""><h2>{c.description}</h2></th>
                                             <th class=""><h2>{c.pivot.quantity}</h2></th>
-                                            <th class=""><h2></h2>{c.price}</th>
-                                            <td class="d-flex justify-content-end"><h2>{c.pivot.quantity}*{c.price}</h2></td>
+                                            <th class=""><h2>{c.outputprice}{window.APP.currency_symbol}</h2></th>
+                                            <td class="d-flex justify-content-end"><h2>{c.pivot.quantity*c.outputprice}{window.APP.currency_symbol}</h2></td>
                                         </tr> 
                                     ))}
                                     </tbody>
@@ -362,23 +363,23 @@ class Cart extends Component {
                                         <tr class="">
                                             <td class=""></td>
                                             <td class=""><h2>Tổng tiền:</h2></td>
-                                            <td class="d-flex justify-content-end"><h2>{this.state.total}  {window.APP.currency_symbol}</h2></td>
+                                            <td class="d-flex justify-content-end"><h2>{this.state.total}{window.APP.currency_symbol} </h2></td>
                                         </tr>
                                         <tr class="">
                                             <td class=""></td>
                                             <td class=""><h2>Chiết khấu:</h2></td>
-                                            <td class="d-flex justify-content-end"><h2></h2>{this.state.discount} {window.APP.currency_symbol} </td>
+                                            <td class="d-flex justify-content-end"><h2>{this.state.discount}{window.APP.currency_symbol} </h2></td>
                                         </tr>
                                     
                                         <tr class="">
                                             <td class=""></td>
                                             <td class=""><h2>Thành tiền:</h2></td>
-                                            <td class="d-flex justify-content-end"><h2>{this.state.totalBill} {window.APP.currency_symbol}</h2></td>
+                                            <td class="d-flex justify-content-end"><h2>{this.state.totalBill}{window.APP.currency_symbol} </h2></td>
                                         </tr>
                                         <tr class="">
                                             <td class=""></td>
                                             <td class=""><h2>Đã trả:</h2></td>
-                                            <td class="d-flex justify-content-end"><h2></h2></td>
+                                            <td class="d-flex justify-content-end"><h2>{window.APP.currency_symbol}</h2></td>
                                         </tr>
                                         <tr class="">
                                             <td class=""></td>
