@@ -4,6 +4,8 @@
 @section('content-header', 'Danh sách sản phẩm')
 @section('content-actions')
 <a href="{{route('products.create')}}" class="btn btn-primary"><i class='bx bx-add-to-queue' ></i> Tạo sản phẩm mới</a>
+<a href="{{route('categorys.index')}}" class="btn btn-primary"></i> Danh mục</a>
+<a href="{{route('products.index')}}" class="btn btn-primary"></i> Thương hiệu</a>
 <a href="{{route('export.export')}}" class="btn btn-primary"><i class='bx bxs-download'></i> Xuất file excel</a>
 <a href="" class="btn btn-primary"><i class='bx bx-up-arrow-alt' ></i> Nhập file excel</a>
 @endsection
@@ -14,14 +16,19 @@
 @section('content')
 <div class="card product-list">
     <div class="card-body">
-        <table class="table">
+      <div class="table-responsive text-nowrap">
+      <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Tên sản phẩm</th>
                     <th>Ảnh</th>
                     <th>Barcode</th>
-                    <th>Giá</th>
+                    <th>Thương hiệu</th>
+                    <th>Danh mục</th>
+                    <th>Đơn vị</th>
+                    <th>Giá bán</th>
+                    <th>Giá nhập</th>
                     <th>Số lượng</th>
                     <th>Trạng thái</th>
                     <th>Ngày cập nhât</th>
@@ -53,6 +60,8 @@
                         @endif
                     </td>
                     <td>{{$product->updated_at}}</td>
+                    <td>{{$product->updated_at}}</td>
+                    <td>{{$product->updated_at}}</td>
                     <td>
                         <div class="dropdown" style="text-align: center;">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -69,6 +78,7 @@
             </tbody>
         </table>
         {{ $products->render() }}
+      </div>
     </div>
 </div>
 @endsection

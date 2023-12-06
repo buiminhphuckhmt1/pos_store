@@ -202,13 +202,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.all.min.js"></script>
 <script>
     $(document).ready(function () {
-      var button = document.getElementById("generate");
-
-        button.onclick = function generate() {
-        var randomNum = Math.floor(Math.random() * (100000000-10000000)+10000000);
-        var el = document.getElementById('barcode');
-        el.value = randomNum;
-        }
         $(document).on('click', '.btn-delete', function () {
             $this = $(this);
             const swalWithBootstrapButtons = Swal.mixin({
@@ -262,6 +255,12 @@
                 }
         });
                 })
+                var button = document.getElementById("generate");
+                button.onclick = function generate() {
+                var randomNum = Math.floor(Math.random() * (100000000-10000000)+10000000);
+                var el = document.getElementById('barcode');
+                el.value = randomNum;
+                }
     })
 </script>
 </body>

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductStoreRequest;
-use App\Http\Requests\ProductUpdateRequest;
-use App\Http\Resources\ProductResource;
-use App\Models\Product;
+use App\Http\Requests\CategoryStoreRequest;
+use App\Http\Requests\CategoryUpdateRequest;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class ProductController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,15 +18,15 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $products = new Product();
+        $categorys = new Category();
         if ($request->search) {
-            $products = $products->where('name', 'LIKE', "%{$request->search}%");
+            $categorys = $categorys->where('name', 'LIKE', "%{$request->search}%");
         }
-        $products = $products->latest()->paginate(1000);
+        $categorys = $categorys->latest()->paginate(1000);
         if (request()->wantsJson()) {
-            return ProductResource::collection($products);
+            return CategoryResource::collection($categorys);
         }
-        return view('products.index')->with('products', $products);
+        return view('categorys.index')->with('categorys', $categorys);
     }
 
     /**
@@ -36,7 +36,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        return view('categorys.create');
     }
 
      /**
@@ -46,7 +46,7 @@ class ProductController extends Controller
      */
     public function category()
     {
-        return view('products.category');
+        return view('categorys.category');
     }
 
      /**
@@ -56,7 +56,7 @@ class ProductController extends Controller
      */
     public function brand()
     {
-        return view('products.brand');
+        return view('categorys.brand');
     }
 
     /**
@@ -65,18 +65,18 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductStoreRequest $request)
+    public function store(CategoryStoreRequest $request)
     {
         $image_path = '';
 
         if ($request->hasFile('image')) {
-            $image_path = $request->file('image')->store('products', 'public');
+            $image_path = $request->file('image')->store('categorys', 'public');
         }
         else{
-            $image_path = 'products/defaulppicture.jpg';
+            $image_path = 'categorys/defaulppicture.jpg';
         }
 
-        $product = Product::create([
+        $category = Category::create([
             'name' => $request->name,
             'description' => $request->description,
             'image' => $image_path,
@@ -87,19 +87,19 @@ class ProductController extends Controller
             'status' => $request->status
         ]);
 
-        if (!$product) {
+        if (!$category) {
             return redirect()->back()->with('lỗi', 'xin lỗi có vấn đề trong khi tạo sản phẩm mới');
         }
-        return redirect()->route('products.index')->with('thành công', 'sản phẩm đã được tạo.');
+        return redirect()->route('categorys.index')->with('thành công', 'sản phẩm đã được tạo.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Category $category)
     {
         //
     }
@@ -107,60 +107,60 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(Category $category)
     {
-        return view('products.edit')->with('product', $product);
+        return view('categorys.edit')->with('category', $category);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductUpdateRequest $request, Product $product)
+    public function update(CategoryUpdateRequest $request, Category $category)
     {
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->barcode = $request->barcode;
-        $product->inputprice = $request->inputprice;
-        $product->outputprice = $request->outputprice;
-        $product->quantity = $request->quantity;
-        $product->status = $request->status;
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->barcode = $request->barcode;
+        $category->inputprice = $request->inputprice;
+        $category->outputprice = $request->outputprice;
+        $category->quantity = $request->quantity;
+        $category->status = $request->status;
 
         if ($request->hasFile('image')) {
             // Delete old image
-            if ($product->image) {
-                Storage::delete($product->image);
+            if ($category->image) {
+                Storage::delete($category->image);
             }
             // Store image
-            $image_path = $request->file('image')->store('products', 'public');
+            $image_path = $request->file('image')->store('categorys', 'public');
             // Save to Database
-            $product->image = $image_path;
+            $category->image = $image_path;
         }
 
-        if (!$product->save()) {
+        if (!$category->save()) {
             return redirect()->back()->with('Lỗi', 'xin lỗi có vấn đề khi câp nhât sản phẩm.');
         }
-        return redirect()->route('products.index')->with('Thành công', 'Cập nhật sản pphẩm thành công.');
+        return redirect()->route('categorys.index')->with('Thành công', 'Cập nhật sản pphẩm thành công.');
     }
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Category $category)
     {
-        if ($product->image) {
-            Storage::delete($product->image);
+        if ($category->image) {
+            Storage::delete($category->image);
         }
-        $product = Product::delete($product);
+        $category = Category::delete($category);
 
-        return redirect()->route('products.index')->with('Thành công', 'Đã xóa sản phẩm.');
+        return redirect()->route('categorys.index')->with('Thành công', 'Đã xóa sản phẩm.');
     }
 }

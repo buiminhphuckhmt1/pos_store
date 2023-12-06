@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Tạo sản phẩm mới')
-@section('content-header', 'Tạo sản phẩm mới')
+@section('title', 'Thương hiệu sản phẩm')
+@section('content-header', 'Thương hiệu sản phẩm')
 
 @section('content')
 
