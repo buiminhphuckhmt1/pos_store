@@ -22,7 +22,7 @@ class ProductController extends Controller
         if ($request->search) {
             $products = $products->where('name', 'LIKE', "%{$request->search}%");
         }
-        $products = $products->latest()->paginate(1000);
+        $products = $products->latest()->paginate(10);
         if (request()->wantsJson()) {
             return ProductResource::collection($products);
         }
@@ -37,26 +37,6 @@ class ProductController extends Controller
     public function create()
     {
         return view('products.create');
-    }
-
-     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function category()
-    {
-        return view('products.category');
-    }
-
-     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function brand()
-    {
-        return view('products.brand');
     }
 
     /**

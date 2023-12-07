@@ -214,7 +214,7 @@
 
                 swalWithBootstrapButtons.fire({
                 title: 'Bạn có chắc?',
-                text: "Bạn thật sự muốn xóa sản phẩm này?",
+                text: "Bạn thật sự muốn xóa?",
                 icon: 'Cảnh báo',
                 showCancelButton: true,
                 confirmButtonText: 'Vâng, xóa nó!',
@@ -242,7 +242,7 @@
 
                 swalWithBootstrapButtons.fire({
                 title: 'Bạn có chắc?',
-                text: "Bạn thật sự muốn sửa sản phẩm này?",
+                text: "Bạn thật sự muốn sửa?",
                 icon: 'Cảnh báo',
                 showCancelButton: true,
                 confirmButtonText: 'Có,sửa nó!',
