@@ -62,7 +62,6 @@ class ProductController extends Controller
             $image_path = 'products/defaulppicture.jpg';
         }
 
-        dd($request->category_id);
         $product = Product::create([
             'name' => $request->name,
             'description' => $request->description,

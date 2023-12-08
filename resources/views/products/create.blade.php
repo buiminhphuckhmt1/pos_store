@@ -24,7 +24,7 @@
                                             </span>
                                             @enderror
                                         </div>
-
+                                        <input type="text" name='quantity'>
 
                                         <div class="form-group mb-3">
                                             <label for="barcode">Mã vạch</label>
