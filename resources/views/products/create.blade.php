@@ -24,7 +24,6 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <input type="text" name='quantity'>
 
                                         <div class="form-group mb-3">
                                             <label for="barcode">Mã vạch</label>
@@ -48,9 +47,9 @@
                                             <label for="brand_id">Thương hiệu</label>
                                             <select class="form-select @error('brand_id') is-invalid @enderror"
                                                 id="brand_id"name="brand_id" id="exampleFormControlSelect1" aria-label="Default select example">
-                                                <option selected="">chọn nhãn hiệu</option>
+                                                <option selected>chọn thương hiệu</option>
                                                 @foreach($brands as $row)
-                                                        <option value="{{$row->id }}" selected >{{ $row->name }}</option>
+                                                        <option value="{{$row->id }}">{{ $row->name }}</option>
                                                     @endforeach
                                             </select>
                                             @error('brand_id')
@@ -67,9 +66,9 @@
                                                 <label for="category_id">Danh mục</label>
                                                 <select class="form-select @error('category_id') is-invalid @enderror"
                                                     id="category_id" name="category_id" id="exampleFormControlSelect1" aria-label="Default select example">
-                                                    <option selected="">chọn danh mục</option>
+                                                    <option selected>chọn danh mục</option>
                                                     @foreach($products as $row)
-                                                    <option value="{{$row->id }}" selected >{{ $row->name }}</option>
+                                                    <option value="{{$row->id }}">{{ $row->name }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('category_id')
@@ -140,6 +139,17 @@
                                             <input type="text" name="unit_purchas" class="form-control @error('unit_purchas') is-invalid @enderror" id="unit_purchas"
                                                 placeholder="giá bán" value="{{ old('unit_purchas') }}">
                                             @error('unit_purchas')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <label for="stock_alert">Cảnh báo số lượng</label>
+                                            <input type="text" name="stock_alert" class="form-control @error('stock_alert') is-invalid @enderror" id="stock_alert"
+                                                placeholder="nhập số lượng cảnh báo" value="{{ old('stock_alert') }}">
+                                            @error('stock_alert')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

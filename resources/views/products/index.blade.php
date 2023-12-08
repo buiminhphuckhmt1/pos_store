@@ -9,6 +9,7 @@
 <a href="{{route('products.create')}}" class="btn btn-primary"><i class='bx bx-add-to-queue' ></i> Tạo sản phẩm mới</a>
 <a href="{{route('categorys.index')}}" class="btn btn-primary"></i> Danh mục</a>
 <a href="{{route('brands.index')}}" class="btn btn-primary"></i> Thương hiệu</a>
+<a href="{{route('print.print')}}" class="btn btn-primary"></i> In Nhãn</a>
 <a href="{{route('export.export')}}" class="btn btn-primary"><i class='bx bxs-download'></i> Xuất file excel</a>
 <a href="" class="btn btn-primary"><i class='bx bx-up-arrow-alt' ></i> Nhập file excel</a>
 @endsection
@@ -23,6 +24,7 @@
       <table class="table">
             <thead>
                 <tr>
+                    <th>Thao tác</th>
                     <th>ID</th>
                     <th>Tên sản phẩm</th>
                     <th>Ảnh</th>
@@ -34,14 +36,27 @@
                     <th>Giá bán</th>
                     <th>Giá nhập</th>
                     <th>Số lượng</th>
+                    <th>Cảnh báo</th>
                     <th>Trạng thái</th>
+                    <th>Mô tả</th>
                     <th>Ngày cập nhât</th>
-                    <th>Thao tác</th>
+                    
                 </tr>
             </thead>
             <tbody>
                 @foreach ($products as $product)
                 <tr style="text-align: center;">
+                  <td>
+                    <div class="dropdown" style="text-align: center;">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                          <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item btn-edit" data-url="{{ route('products.edit', $product) }}"><i class="bx bx-edit-alt me-1"></i> Sửa</a>
+                          <button class="dropdown-item btn-delete" data-url="{{route('products.destroy', $product)}}"><i class="bx bx-trash me-1"></i> Xóa</button>
+                        </div>
+                      </div>
+                    </td>
                     <td>{{$product->id}}</td>
                     <td>{{$product->name}}</td>
                     <td>
@@ -58,7 +73,8 @@
                     <td>{{$product->unit_sale}}</td>
                     <td>{{ number_format($product->inputprice) }} {{ config('settings.currency_symbol') }}</td>
                     <td>{{ number_format($product->outputprice) }} {{ config('settings.currency_symbol') }}</td>
-                    <td>{{$product->quantity}}</td>
+                    <td></td>
+                    <td>{{$product->stock_alert}}</td>
                     <td>
                     @if ($product->status == 1)
                         <span class="badge bg-label-primary me-1">Hiện</span>
@@ -68,18 +84,9 @@
                           N/A
                         @endif
                     </td>
+                    <td>{{$product->description}}</td>
                     <td>{{$product->updated_at}}</td>
-                    <td>
-                        <div class="dropdown" style="text-align: center;">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item btn-edit" data-url="{{ route('products.edit', $product) }}"><i class="bx bx-edit-alt me-1"></i> Sửa</a>
-                              <button class="dropdown-item btn-delete" data-url="{{route('products.destroy', $product)}}"><i class="bx bx-trash me-1"></i> Xóa</button>
-                            </div>
-                        </div>
-                    </td>
+                    
                 </tr>
                 @endforeach
             </tbody>

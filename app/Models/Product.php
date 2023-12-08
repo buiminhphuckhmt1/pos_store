@@ -18,7 +18,7 @@ class Product extends Model
         'inputprice',
         'outputprice',
         'discountpercen',
-        'quantity',
+        'stock_alert',
         'status'
     ];
     public function category()

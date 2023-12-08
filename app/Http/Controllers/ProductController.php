@@ -31,6 +31,8 @@ class ProductController extends Controller
         return view('products.index')->with('products', $products);
     }
 
+   
+
     /**
      * Show the form for creating a new resource.
      *
@@ -74,7 +76,7 @@ class ProductController extends Controller
             'inputprice' => $request->inputprice,
             'outputprice' => $request->outputprice,
             'discountpercen'=>$request->discountpercen,
-            'quantity' => $request->quantity,
+            'stock_alert' => $request->stock_alert,
             'status' => $request->status
         ]);
 
@@ -103,7 +105,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('products.edit')->with('product', $product);
+        $categorys = new Category();
+        $categorys = $categorys->latest()->paginate(100);
+        $brands = new Brand();
+        $brands = $brands->latest()->paginate(100);
+        return view('products.edit',compact('brands','categorys'))->with('product', $product);
     }
 
     /**
@@ -124,7 +130,7 @@ class ProductController extends Controller
         $product->unit_purchas = $request->unit_purchas;
         $product->inputprice = $request->inputprice;
         $product->outputprice = $request->outputprice;
-        $product->quantity = $request->quantity;
+        $product->stock_alert = $request->stock_alert;
         $product->status = $request->status;
 
         if ($request->hasFile('image')) {
@@ -141,7 +147,7 @@ class ProductController extends Controller
         if (!$product->save()) {
             return redirect()->back()->with('error', 'xin lỗi có vấn đề khi câp nhât sản phẩm.');
         }
-        return redirect()->route('products.index')->with('success', 'Cập nhật sản pphẩm thành công.');
+        return redirect()->route('products.index')->with('success', 'Cập nhật sản phẩm thành công.');
     }
     /**
      * Remove the specified resource from storage.

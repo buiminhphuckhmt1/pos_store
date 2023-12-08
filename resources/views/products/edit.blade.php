@@ -46,14 +46,14 @@
                                         </div>
 
                                         <div class="form-group mb-3">
-                                            <label for="inputprice">Nhãn hiệu</label>
-                                            <select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
-                                                <option selected="">chọn nhãn hiệu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
+                                            <label for="brand_id">Thương hiệu</label>
+                                            <select class="form-select" name="brand_id" id="exampleFormControlSelect1" aria-label="Default select example">
+                                                <option selected>chọn thương hiệu</option>
+                                                @foreach($brands as $row)
+                                                <option value="{{$row->id }}" {{ old('brand_id', $product->brand_id) === $row->id  ? 'selected' : ''}}>{{ $row->name }}</option>
+                                                @endforeach
                                             </select>
-                                            @error('inputprice')
+                                            @error('brand_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -64,26 +64,26 @@
                                     <div class="mb-2 col-md-6"> 
 
                                         <div class="form-group mb-3">
-                                                <label for="inputprice">Thể loại</label>
-                                                <select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
-                                                    <option selected="">chọn thể loại</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
+                                                <label for="category_id">Danh mục</label>
+                                                <select class="form-select" name="category_id" id="exampleFormControlSelect1" aria-label="Default select example">
+                                                    <option selected>chọn danh mục</option>
+                                                    @foreach($categorys as $row)
+                                                    <option value="{{$row->id }}" {{ old('category_id', $product->category_id) === $row->id  ? 'selected' : ''}}>{{ $row->name }}</option>
+                                                    @endforeach
                                                 </select>
-                                                @error('inputprice')
+                                                @error('category_id')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                                 @enderror
                                         </div>
                                         <div class="form-group mb-3">
-                                        <label for="inputprice">Giảm giá</label>
+                                        <label for="discountpercen">Giảm giá</label>
                                             <div class="input-group">
-                                            <input type="text" name="inputprice" class="form-control @error('inputprice') is-invalid @enderror" id="inputprice"
-                                                    placeholder="nhập giảm giá" value="{{ old('inputprice') }}">
+                                            <input type="text" name="discountpercen" class="form-control @error('discountpercen') is-invalid @enderror" id="discountpercen"
+                                                    placeholder="nhập giảm giá" value="{{ old('discountpercen',$product->discountpercen) }}">
                                                 <span class="input-group-text">%</span>
-                                                @error('inputprice')
+                                                @error('discountpercen')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -107,8 +107,12 @@
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="description">Mô tả</label>
+                                
                                     <textarea class="form-control" type="text" name="description" class="form-control @error('description') is-invalid @enderror"
-                                        id="description" placeholder="nhập mô tả ..." value="{{ old('description',$product->description) }}" rows="3"></textarea>   
+                                        id="description" placeholder="nhập mô tả ..." rows="3"></textarea> 
+                                    <script>
+                                        document.getElementById("description").value="{{ old('description',$product->description) }}";
+                                    </script>  
                                     @error('description')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -135,20 +139,20 @@
                                         </div>
 
                                         <div class="form-group mb-3">
-                                            <label for="outputprice">Đơn vị nhập vào</label>
-                                            <input type="text" name="outputprice" class="form-control @error('outputprice') is-invalid @enderror" id="outputprice"
-                                                placeholder="giá bán" value="{{ old('outputprice') }}">
-                                            @error('outputprice')
+                                            <label for="unit_purchas">Đơn vị nhập vào</label>
+                                            <input type="text" name="unit_purchas" class="form-control @error('unit_purchas') is-invalid @enderror" id="unit_purchas"
+                                                placeholder="giá bán" value="{{ old('unit_purchas',$product->unit_purchas) }}">
+                                            @error('unit_purchas')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                             @enderror
                                         </div>
                                         <div class="form-group mb-3">
-                                            <label for="outputprice">Cảnh báo số lượng</label>
-                                            <input type="text" name="outputprice" class="form-control @error('outputprice') is-invalid @enderror" id="outputprice"
-                                                placeholder="nhập số lượng cảnh báo" value="{{ old('outputprice') }}">
-                                            @error('outputprice')
+                                            <label for="stock_alert">Cảnh báo số lượng</label>
+                                            <input type="text" name="stock_alert" class="form-control @error('stock_alert') is-invalid @enderror" id="stock_alert"
+                                                placeholder="nhập số lượng cảnh báo" value="{{ old('stock_alert',$product->stock_alert) }}">
+                                            @error('stock_alert')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -169,10 +173,10 @@
                                             @enderror
                                         </div>
                                         <div class="form-group mb-3">
-                                                <label for="outputprice">Đơn vị bán ra</label>
-                                                <input type="text" name="outputprice" class="form-control @error('outputprice') is-invalid @enderror" id="outputprice"
-                                                    placeholder="giá bán" value="{{ old('outputprice') }}">
-                                                @error('outputprice')
+                                                <label for="unit_sale">Đơn vị bán ra</label>
+                                                <input type="text" name="unit_sale" class="form-control @error('unit_sale') is-invalid @enderror" id="unit_sale"
+                                                    placeholder="giá bán" value="{{ old('unit_sale',$product->unit_purchas) }}">
+                                                @error('unit_sale')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
