@@ -10,5 +10,9 @@ class Category extends Model
         'code',
         'name'
     ];
+    public function products()
+    {
+        return $this->hasMany(Post::class, 'category_id', 'id');
+    }
 
 }

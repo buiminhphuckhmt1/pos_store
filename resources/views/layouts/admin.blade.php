@@ -73,7 +73,10 @@
               <div class="navbar-nav align-items-center">
                 <div class="nav-item d-flex align-items-center">
                   <i class="bx bx-search fs-4 lh-0"></i>
-                  <input type="text" class="form-control border-0 shadow-none" placeholder="Search..." aria-label="Search...">
+                  @yield('search')
+                  @csrf
+                    <input type="text" name="search" class="form-control border-0 shadow-none" placeholder="Search..." aria-label="Search...">
+                </form>
                 </div>
               </div>
               <!-- /Search -->
@@ -217,7 +220,7 @@
                 text: "Bạn thật sự muốn xóa?",
                 icon: 'Cảnh báo',
                 showCancelButton: true,
-                confirmButtonText: 'Vâng, xóa nó!',
+                confirmButtonText: 'có, xóa nó!',
                 cancelButtonText: 'Không',
                 reverseButtons: true
                 }).then((result) => {

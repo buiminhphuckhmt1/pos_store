@@ -2,6 +2,9 @@
 
 @section('title', 'Danh sách sản phẩm')
 @section('content-header', 'Danh sách sản phẩm')
+@section('search')
+        <form class="d-flex" action="{{ route('products.index') }}" method="GET" enctype="multipart/form-data">
+@endsection
 @section('content-actions')
 <a href="{{route('products.create')}}" class="btn btn-primary"><i class='bx bx-add-to-queue' ></i> Tạo sản phẩm mới</a>
 <a href="{{route('categorys.index')}}" class="btn btn-primary"></i> Danh mục</a>
@@ -26,7 +29,8 @@
                     <th>Barcode</th>
                     <th>Thương hiệu</th>
                     <th>Danh mục</th>
-                    <th>Đơn vị</th>
+                    <th>Đơn vị bán</th>
+                    <th>Đơn vị nhập</th>
                     <th>Giá bán</th>
                     <th>Giá nhập</th>
                     <th>Số lượng</th>
@@ -48,6 +52,11 @@
                         </ul>                        
                     </td>                    
                     <td>{{$product->barcode}}</td>
+                    <td>{{$product->category->name}}</td>
+                    <td>{{$product->brand->name}}</td>
+                    <td>{{$product->unit_purchas}}</td>
+                    <td>{{$product->unit_sale}}</td>
+                    <td>{{ number_format($product->inputprice) }} {{ config('settings.currency_symbol') }}</td>
                     <td>{{ number_format($product->outputprice) }} {{ config('settings.currency_symbol') }}</td>
                     <td>{{$product->quantity}}</td>
                     <td>
@@ -59,8 +68,6 @@
                           N/A
                         @endif
                     </td>
-                    <td>{{$product->updated_at}}</td>
-                    <td>{{$product->updated_at}}</td>
                     <td>{{$product->updated_at}}</td>
                     <td>
                         <div class="dropdown" style="text-align: center;">

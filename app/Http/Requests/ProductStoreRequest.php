@@ -28,6 +28,11 @@ class ProductStoreRequest extends FormRequest
             'description' => 'nullable|string',
             'image' => 'nullable|image',
             'barcode' => 'required|string|max:50|unique:products',
+            'category_id'=>'required|integer',
+            'brand_id'=>'required|integer',
+            'unit_sale' => 'required|string',
+            'unit_purchas' => 'required|string',
+            
             'inputprice' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'outputprice' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'quantity' => 'required|integer',

@@ -2,7 +2,9 @@
 
 @section('title', 'Thương hiệu sản phẩm')
 @section('content-header', 'Thương hiệu sản phẩm')
-
+@section('search')
+        <form class="d-flex" action="{{ route('brands.index') }}" method="GET" enctype="multipart/form-data">
+@endsection
 @section('content-actions')
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CategoryModal">
     Tạo thương hiệu

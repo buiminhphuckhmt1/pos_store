@@ -6,6 +6,8 @@ use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -36,7 +38,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        $products = new Category();
+        $products = $products->latest()->paginate(100);
+        $brands = new Brand();
+        $brands = $brands->latest()->paginate(100);
+        return view('products.create',compact('products', 'brands'));
     }
 
     /**
@@ -56,21 +62,27 @@ class ProductController extends Controller
             $image_path = 'products/defaulppicture.jpg';
         }
 
+        dd($request->category_id);
         $product = Product::create([
             'name' => $request->name,
             'description' => $request->description,
             'image' => $image_path,
             'barcode' => $request->barcode,
+            'category_id' =>$request->category_id,
+            'brand_id'=>$request->brand_id,
+            'unit_sale'=>$request->unit_sale,
+            'unit_purchas'=>$request->unit_purchas,
             'inputprice' => $request->inputprice,
             'outputprice' => $request->outputprice,
+            'discountpercen'=>$request->discountpercen,
             'quantity' => $request->quantity,
             'status' => $request->status
         ]);
 
         if (!$product) {
-            return redirect()->back()->with('lỗi', 'xin lỗi có vấn đề trong khi tạo sản phẩm mới');
+            return redirect()->back()->with('error', 'xin lỗi có vấn đề trong khi tạo sản phẩm mới');
         }
-        return redirect()->route('products.index')->with('thành công', 'sản phẩm đã được tạo.');
+        return redirect()->route('products.index')->with('success', 'sản phẩm đã được tạo.');
     }
 
     /**
@@ -107,6 +119,10 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->description = $request->description;
         $product->barcode = $request->barcode;
+        $product->category_id = $request->category_id;
+        $product->brand_id = $request->brand_id;
+        $product->unit_sale = $request->unit_sale;
+        $product->unit_purchas = $request->unit_purchas;
         $product->inputprice = $request->inputprice;
         $product->outputprice = $request->outputprice;
         $product->quantity = $request->quantity;
@@ -124,9 +140,9 @@ class ProductController extends Controller
         }
 
         if (!$product->save()) {
-            return redirect()->back()->with('Lỗi', 'xin lỗi có vấn đề khi câp nhât sản phẩm.');
+            return redirect()->back()->with('error', 'xin lỗi có vấn đề khi câp nhât sản phẩm.');
         }
-        return redirect()->route('products.index')->with('Thành công', 'Cập nhật sản pphẩm thành công.');
+        return redirect()->route('products.index')->with('success', 'Cập nhật sản pphẩm thành công.');
     }
     /**
      * Remove the specified resource from storage.
@@ -141,6 +157,6 @@ class ProductController extends Controller
         }
         $product = Product::delete($product);
 
-        return redirect()->route('products.index')->with('Thành công', 'Đã xóa sản phẩm.');
+        return redirect()->route('products.index')->with('success', 'Đã xóa sản phẩm.');
     }
 }
