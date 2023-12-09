@@ -3,7 +3,7 @@
 @section('title', 'In nhãn sản phẩm')
 @section('content-header', 'In nhãn sản phẩm')
 @section('search')
-        <form class="d-flex" action="{{ route('print.print') }}" method="GET" enctype="multipart/form-data">
+        <form class="d-flex"  action="{{ route('print.print') }}" method="GET" enctype="multipart/form-data">
 @endsection
 @section('content-actions')
 @endsection
@@ -49,7 +49,8 @@
                 <tr style="text-align: left;">
                     <td>{{$product->name}}</td>                   
                     <td>{{$product->barcode}}</td>
-                    
+                    <td>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
@@ -58,41 +59,58 @@
     </div>
 </div>
 <div class="d-flex gap-4 mt-4">
-<button type="button" class="btn btn-info">Cập nhật</button>
-<button type="button" class="btn btn-info">In</button>
+<button type="button" class="btn btn-info toggle-display">Cập nhật</button>
 </div>
-<div id='printlable'>
-    <div class="row">
-        <div class="barcode_non_a4">
-            <div class="barcode-item style30">
-                @foreach ($products as $product)
-                <div class="head_barcode text-left" style="padding-left: 10px; font-weight: bold;">
-                    <span class="barcode-name">{{$product->name}}</span> 
-                    <span class="barcode-price">{{ number_format($product->outputprice) }} {{ config('settings.currency_symbol') }}</span>
+<div class="container-xxl flex-grow-1 container-p-y">
+<div class="row border border-dark box is-toggle d-none">
+<div class="d-block gap-4 mt-2">
+<button type="button" class="btn btnprn btn-info"><i class="bx bx-printer"></i></button>
+</div>
+              @for ($i = 0; $i < 8; $i++)
+                <div class="col-md-6 col-xl-3">
+                  <div class="card shadow-none bg-transparent border border-dark mb-3 mt-3">
+                    <div class="card-body">
+                      <div class="barcode-item style30">
+                          @foreach ($products as $product)
+                          <div class="head_barcode text-center">
+                              <h5 class="barcode-name mb-0 p-0">{{$product->name}}</h5> 
+                          </div>
+                          <div textmargin="0" fontoptions="bold" class="barcode">
+                          {!! DNS1D::getBarcodeHTML($product->barcode, "C128",2,70) !!}
+                          </div>
+                          @endforeach
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div textmargin="0" fontoptions="bold" class="barcode">
-                {!! DNS1D::getBarcodeHTML($product->barcode, "C128",2,70) !!}
-                </div>
-                @endforeach
+              @endfor
+              </div>
             </div>
-        </div>
-    </div>
-</div>
+            <div id='printTable' class="d-none">
+              <table class="table table-striped" cellpadding="25" text-align="center">
+              <tbody>
+              @for ($j = 0; $j < 2; $j++)
+                <tr text-align="center">
+                @for ($i = 0; $i < 4; $i++)
+                  <td text-align="center">
+                    <div class="barcode-item style30">
+                      @foreach ($products as $product)
+                      <div class="head_barcode text-center">
+                        <h1 class="barcode-name mb-0 p-0">{{$product->name}}</h1> 
+                      </div>
+                      <div textmargin="0" fontoptions="bold" class="barcode">
+                        {!! DNS1D::getBarcodeHTML($product->barcode, "C128",3,150) !!}
+                      </div>
+                      @endforeach
+                    </div>
+                  </td>
+                  @endfor
+                </tr>
+                @endfor
+              </tbody>
+              </table>
+            </div>
 @endsection
 @section('js')
-<script src="{{ asset('admin/assets/admin/layout2/js/jQuery.print.js') }}"></script>
-                        <script type="text/javascript">
-                        function printData()
-                        {
-                            var divToPrint=document.getElementById("printlable");
-                            newWin= window.open("");
-                            newWin.document.write(divToPrint.outerHTML);
-                            newWin.print();
-                            newWin.close();
-                        }
 
-                        $('.btnprn').on('click',function(){
-                        printData();
-                        })
-                        </script>
 @endsection

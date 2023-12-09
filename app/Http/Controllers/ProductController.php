@@ -20,15 +20,22 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        $categorys = new Category();
+        $categorys = $categorys->latest()->paginate(100);
+        $brands = new Brand();
+        $brands = $brands->latest()->paginate(100);
         $products = new Product();
         if ($request->search) {
-            $products = $products->where('name', 'LIKE', "%{$request->search}%");
+            $products = $products->where('name', 'LIKE', "%{$request->search}%")->orWhere('barcode', 'LIKE', "{$request->search}");
+        }
+        elseif ($request->barcode) {
+            $products = $products->where('barcode', 'LIKE', "%{$request->barcode}%");
         }
         $products = $products->latest()->paginate(10);
         if (request()->wantsJson()) {
             return ProductResource::collection($products);
         }
-        return view('products.index')->with('products', $products);
+        return view('products.index',compact('products', 'brands','categorys'));
     }
 
    

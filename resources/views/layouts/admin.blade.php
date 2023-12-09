@@ -203,7 +203,22 @@
                         <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.all.min.js"></script>
+<script src="{{ asset('admin/assets/admin/layout2/js/vue.js') }}"></script>
+	<script src="{{ asset('admin/assets/admin/layout2/js/httpvueloader.js') }}"></script>
+	<script>
+		var app = new Vue({
+			el: '#app',
+			mounted() {
+				$(window).bind('load', function () {
+
+				});
+			},
+		});
+	</script>
 <script>
+  document.querySelector('.toggle-display').addEventListener('click', function() {
+    document.querySelector('.box.is-toggle').classList.toggle('d-none');
+});
     $(document).ready(function () {
         $(document).on('click', '.btn-delete', function () {
             $this = $(this);

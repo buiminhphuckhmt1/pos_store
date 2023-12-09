@@ -17,12 +17,13 @@ class PrintController extends Controller
      */
     public function print(Request $request)
     {
+        $totalpr=$request->totalpr;
         $products = new Product();
         $request->search;
         $products = $products->where('name', 'LIKE', "{$request->search}")
         ->orWhere('barcode', 'LIKE', "{$request->search}")->get();
-
-        return view('print.print')->with('products', $products);
+        $barcode= null;
+        return view('print.print',compact('products', 'barcode'));
     }
 
 }
