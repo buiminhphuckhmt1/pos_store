@@ -28,8 +28,8 @@ class ProductController extends Controller
         if ($request->search) {
             $products = $products->where('name', 'LIKE', "%{$request->search}%")->orWhere('barcode', 'LIKE', "{$request->search}");
         }
-        elseif ($request->barcode) {
-            $products = $products->where('barcode', 'LIKE', "%{$request->barcode}%");
+        elseif ($request->barcode||$request->name) {
+            $products = $products->where('barcode', 'LIKE', "%{$request->barcode}%")->orwhere('name', 'LIKE', "%{$request->name}%");
         }
         $products = $products->latest()->paginate(10);
         if (request()->wantsJson()) {

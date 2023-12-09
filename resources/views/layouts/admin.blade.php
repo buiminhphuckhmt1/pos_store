@@ -219,6 +219,8 @@
   document.querySelector('.toggle-display').addEventListener('click', function() {
     document.querySelector('.box.is-toggle').classList.toggle('d-none');
 });
+</script>
+<script>
     $(document).ready(function () {
         $(document).on('click', '.btn-delete', function () {
             $this = $(this);

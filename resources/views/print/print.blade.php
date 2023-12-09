@@ -24,6 +24,7 @@
                           </div>
                           <div class="offcanvas-body my-auto mx-0 flex-grow-0">
                             <p class="text-center" style="front-size=12px;">
+                            đm phước
                               click chuột vào ô tìm kiếm nhập tên hoặc mã sản phẩm muốn in nhãn sau đó nhắn enter. 
                             </p>
                             <button type="button" class="btn btn-outline-secondary d-grid w-100" data-bs-dismiss="offcanvas">
