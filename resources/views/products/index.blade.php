@@ -40,7 +40,7 @@
                                             <label for="brand_id">Thương hiệu</label>
                                             <select class="form-select"
                                                 id="brand_id"name="brand_id">
-                                                <option selected>chọn thương hiệu</option>
+                                                <option value="" selected>chọn thương hiệu</option>
                                                 @foreach($brands as $row)
                                                 <option value="{{$row->id }}">{{ $row->name }}</option>
                                                 @endforeach
@@ -50,7 +50,7 @@
                                                 <label for="category_id">Danh mục</label>
                                                 <select class="form-select"
                                                     id="category_id" name="category_id">
-                                                    <option selected>chọn danh mục</option>
+                                                    <option value="" selected>chọn danh mục</option>
                                                     @foreach($categorys as $row)
                                                     <option value="{{$row->id }}">{{ $row->name }}</option>
                                                     @endforeach
@@ -114,8 +114,8 @@
                         </ul>                        
                     </td>                    
                     <td>{{$product->barcode}}</td>
-                    <td>{{$product->category->name}}</td>
                     <td>{{$product->brand->name}}</td>
+                    <td>{{$product->category->name}}</td>
                     <td>{{$product->unit_purchas}}</td>
                     <td>{{$product->unit_sale}}</td>
                     <td>{{ number_format($product->inputprice) }} {{ config('settings.currency_symbol') }}</td>

@@ -14,24 +14,38 @@ class OrderController extends Controller
 {
     public function index(Request $request) {
         $orders = new Order();
+        $orderss = new Order();
+        $cus = new Customer();
+        $cus = $cus->where('last_name', 'LIKE', "%{$request->search}%") ;
+        $cuss=$cus->id;
+        dd($cuss); 
+        
+        if ($request->search) {
+            $orders = $orders->where('customer_id', 'LIKE', "{$cus}");
+            $orderss = $orderss->where('name', 'LIKE', "%{$request->search}%");
+        }
         if($request->start_date) {
             $orders = $orders->where('created_at', '>=', $request->start_date);
+            $orderss = $orderss->where('created_at', '>=', $request->start_date);
         }
         if($request->end_date) {
             $orders = $orders->where('created_at', '<=', $request->end_date . ' 23:59:59');
+            $orderss = $orderss->where('created_at', '<=', $request->end_date . ' 23:59:59');
         }
         $orders = $orders->with(['items', 'payments', 'customer'])->latest()->paginate(10);
-        $total = $orders->map(function($i) {
+        $orderss = $orderss->with(['items', 'payments', 'customer'])->latest()->paginate(1000);
+        $total = $orderss->map(function($i) {
             return $i->total();
         })->sum();
-        $receivedAmount = $orders->map(function($i) {
+        $receivedAmount = $orderss->map(function($i) {
             return $i->receivedAmount();
         })->sum();
-        $receivedDiscount = $orders->map(function($i) {
+        $receivedDiscount = $orderss->map(function($i) {
             return $i->receivedDiscount();
         })->sum();
+        
 
-        return view('orders.index', compact('orders', 'total', 'receivedAmount','receivedDiscount'));
+        return view('orders.index', compact('orders','orderss', 'total', 'receivedAmount','receivedDiscount'));
     }
 
     public function store(OrderStoreRequest $request)

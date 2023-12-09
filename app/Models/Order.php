@@ -40,6 +40,17 @@ class Order extends Model
         }
         return 'Khách vãng lai';
     }
+    public function getUserName()
+    {
+        if($this->users) {
+            return $this->users->last_name;
+        }
+        return 'k';
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
     public function getCustomerAddress()
     {
         if($this->customer) {

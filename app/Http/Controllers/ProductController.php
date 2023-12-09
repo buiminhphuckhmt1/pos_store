@@ -25,11 +25,51 @@ class ProductController extends Controller
         $brands = new Brand();
         $brands = $brands->latest()->paginate(100);
         $products = new Product();
+        
         if ($request->search) {
             $products = $products->where('name', 'LIKE', "%{$request->search}%")->orWhere('barcode', 'LIKE', "{$request->search}");
         }
-        elseif ($request->barcode||$request->name) {
-            $products = $products->where('barcode', 'LIKE', "%{$request->barcode}%")->orwhere('name', 'LIKE', "%{$request->name}%");
+        elseif ($request->barcode && $request->name && $request->category_id && $request->brand_id) {
+            $products = $products->where('barcode', 'LIKE', "%{$request->barcode}%")->where('name', 'LIKE', "%{$request->name}%")->where('category_id', 'LIKE', "{$request->category_id}")->where('brand_id', 'LIKE', "{$request->brand_id}");
+        }
+        elseif ($request->barcode && $request->name && $request->category_id) {
+            $products = $products->where('barcode', 'LIKE', "%{$request->barcode}%")->where('name', 'LIKE', "%{$request->name}%")->where('category_id', 'LIKE', "{$request->category_id}");
+        }
+        elseif ($request->barcode && $request->name &&  $request->brand_id) {
+            $products = $products->where('barcode', 'LIKE', "%{$request->barcode}%")->where('name', 'LIKE', "%{$request->name}%")->where('brand_id', 'LIKE', "{$request->brand_id}");
+        }
+        elseif ($request->barcode  && $request->category_id && $request->brand_id) {
+            $products = $products->where('barcode', 'LIKE', "%{$request->barcode}%")->where('category_id', 'LIKE', "{$request->category_id}")->where('brand_id', 'LIKE', "{$request->brand_id}");
+        }
+        elseif ($request->barcode && $request->name) {
+            $products = $products->where('barcode', 'LIKE', "%{$request->barcode}%")->where('name', 'LIKE', "%{$request->name}%");
+        }
+        elseif ($request->barcode && $request->category_id) {
+            $products = $products->where('barcode', 'LIKE', "%{$request->barcode}%")->where('category_id', 'LIKE', "{$request->category_id}");
+        }
+        elseif ($request->barcode && $request->brand_id) {
+            $products = $products->where('barcode', 'LIKE', "%{$request->barcode}%")->where('brand_id', 'LIKE', "{$request->brand_id}");
+        }
+        elseif ($request->barcode) {
+            $products = $products->where('barcode', 'LIKE', "{$request->barcode}%");
+        }
+        elseif ($request->name) {
+            $products = $products->where('name', 'LIKE', "%{$request->name}%");
+        }
+        elseif ($request->name && $request->category_id) {
+            $products = $products->where('name', 'LIKE', "%{$request->name}%")->where('category_id', 'LIKE', "{$request->category_id}");
+        }
+        elseif ($request->name && $request->category_id && $request->brand_id) {
+            $products = $products->where('name', 'LIKE', "%{$request->name}%")->where('category_id', 'LIKE', "{$request->category_id}")->where('brand_id', 'LIKE', "{$request->brand_id}");
+        }
+        elseif ($request->category_id) {
+            $products = $products->where('category_id', 'LIKE', "{$request->category_id}");
+        }
+        elseif ( $request->category_id && $request->brand_id) {
+            $products = $products->where('category_id', 'LIKE', "{$request->category_id}")->where('brand_id', 'LIKE', "{$request->brand_id}");
+        }
+        elseif ($request->brand_id) {
+            $products = $products->where('brand_id', 'LIKE', "{$request->brand_id}");
         }
         $products = $products->latest()->paginate(10);
         if (request()->wantsJson()) {
