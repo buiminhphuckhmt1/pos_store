@@ -86,7 +86,7 @@
                         <h6>{{ $Order->getCustomerName() }}</h6>
                     </div>
                     <div class="col d-flex align-items-center justify-content-end">
-                        <h6>{{ auth()->user()->getFullname() }}</h6>
+                        <h6>{{ auth()->user()->last_name }}</h6>
                     </div>
                 </div>
             </div>
@@ -227,7 +227,7 @@
                         <tr>
                         <th><h3>{{ $Order->getCustomerName() }}</h3></th>
                         <td></td>
-                        <th><h3>{{ auth()->user()->getFullname() }}</h3></th>
+                        <th><h3>{{ auth()->user()->last_name }}</h3></th>
                         </tr>
                     </tbody>
                 </table>

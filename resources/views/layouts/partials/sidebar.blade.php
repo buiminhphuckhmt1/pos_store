@@ -47,13 +47,18 @@
                     <div data-i18n="Tables">Quản lý khách hàng</div>
                   </a>
                 </li>
+                <li class="menu-item {{ activeSegment('customers') }}" >
+                  <a href="{{ route('suppliers.index') }}" class="menu-link">
+                    <div data-i18n="Tables">Nhà cung cấp</div>
+                  </a>
+                </li>
                 <li class="menu-item">
                   <a href="{{ url('backend/category') }}" class="menu-link">
                     <div data-i18n="Tables">Quản lý công nợ</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url('backend/users') }}" class="menu-link">
+                  <a href="{{ route('users.index') }}" class="menu-link">
                     <div data-i18n="Tables">Quản lý tài khoản</div>
                   </a>
                 </li>

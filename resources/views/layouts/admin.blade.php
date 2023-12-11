@@ -104,7 +104,7 @@
                             </div>
                           </div>
                           <div class="flex-grow-1">
-                            <span class="fw-semibold d-block">{{ auth()->user()->getFullname() }}</span>
+                            <span class="fw-semibold d-block">{{ auth()->user()->last_name }}</span>
                             <small class="text-muted">Quản trị viên</small>
                           </div>
                         </div>

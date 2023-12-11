@@ -16,13 +16,10 @@ class OrderController extends Controller
         $orders = new Order();
         $orderss = new Order();
         $cus = new Customer();
-        $cus = $cus->where('last_name', 'LIKE', "%{$request->search}%") ;
-        $cuss=$cus->id;
-        dd($cuss); 
         
         if ($request->search) {
-            $orders = $orders->where('customer_id', 'LIKE', "{$cus}");
-            $orderss = $orderss->where('name', 'LIKE', "%{$request->search}%");
+            $orders = $orders->where('customer_id',$cus=$cus->where('last_name', 'like' ,"%{$request->search}%"));
+            
         }
         if($request->start_date) {
             $orders = $orders->where('created_at', '>=', $request->start_date);

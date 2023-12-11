@@ -120,8 +120,12 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
-        $brand = Brand::delete($brand);
-        return redirect()->route('brands.index')->with('success', 'Đã xóa sản phẩm.');
+        
+        $brand->delete();
+
+        return redirect()
+            ->route('suppliers.index')
+            ->with('success', 'Đã xóa thương hiệu');
     }
 }
 
