@@ -22,21 +22,20 @@
               </a>
             </li>
             <li class="menu-item open">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-table"></i>
-                <div data-i18n="Tables">Quản lý bảng</div>
-              </a>
               <ul class="menu-sub">
+              @if(Auth::user()->role_id && Auth::user()->role_id != 3)
               <li class="menu-item {{ activeSegment('cart') }}">
                   <a href="{{ route('cart.index') }}" class="menu-link">
                     <div data-i18n="Tables">Tạo hóa đơn</div>
                   </a>
                 </li>
+                @endif
                 <li class="menu-item {{ activeSegment('products') }}">
                   <a href="{{ route('products.index') }}" class="menu-link">
                     <div data-i18n="Tables">Quản lý sản phẩm</div>
                   </a>
                 </li>
+                @if(Auth::user()->role_id && Auth::user()->role_id != 3)
                 <li class="menu-item {{ activeSegment('orders') }}">
                   <a href="{{ route('orders.index') }}" class="menu-link">
                     <div data-i18n="Tables">Quản lý hóa đơn</div>
@@ -47,31 +46,35 @@
                     <div data-i18n="Tables">Quản lý khách hàng</div>
                   </a>
                 </li>
-                <li class="menu-item {{ activeSegment('customers') }}" >
-                  <a href="{{ route('suppliers.index') }}" class="menu-link">
-                    <div data-i18n="Tables">Nhà cung cấp</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="{{ url('backend/category') }}" class="menu-link">
-                    <div data-i18n="Tables">Quản lý công nợ</div>
-                  </a>
-                </li>
-                <li class="menu-item">
+                @endif
+                @if(Auth::user()->role_id && Auth::user()->role_id == 1 || Auth::user()->role_id && Auth::user()->role_id == 4 )
+                <li class="menu-item {{ activeSegment('users') }}" >
                   <a href="{{ route('users.index') }}" class="menu-link">
                     <div data-i18n="Tables">Quản lý tài khoản</div>
                   </a>
                 </li>
+                @endif
+                @if(Auth::user()->role_id && Auth::user()->role_id != 2)
+                <li class="menu-item {{ activeSegment('suppliers') }}" >
+                  <a href="{{ route('suppliers.index') }}" class="menu-link">
+                    <div data-i18n="Tables">Nhà cung cấp</div>
+                  </a>
+                </li>
+                
+                <li class="menu-item {{ activeSegment('purchases') }}" >
+                  <a href="{{ route('purchases.index') }}" class="menu-link">
+                    <div data-i18n="Tables">Nhập hàng</div>
+                  </a>
+                </li>
+                @endif
+                
+                @if(Auth::user()->role_id && Auth::user()->role_id == 4 )
                 <li class="menu-item {{ activeSegment('settings') }}">
                   <a href="{{ route('settings.index') }}" class="menu-link">
                     <div data-i18n="Tables">Cài đặt cấu hình</div>
                   </a>
                 </li>
-                <li class="menu-item">
-                    <a href="{{route('logout')}}" class="menu-link" >
-                        <div data-i18n="Tables">Đăng xuất</div>
-                    </a>
-                </li>
+                @endif
               </ul>
             </li>
             <li class="menu-item open">

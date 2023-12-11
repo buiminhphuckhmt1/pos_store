@@ -105,7 +105,7 @@
                           </div>
                           <div class="flex-grow-1">
                             <span class="fw-semibold d-block">{{ auth()->user()->last_name }}</span>
-                            <small class="text-muted">Quản trị viên</small>
+                            <small class="text-muted">{{ auth()->user()->role->name }}</small>
                           </div>
                         </div>
                       </a>
@@ -138,10 +138,17 @@
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="auth-login-basic.html">
-                        <i class="bx bx-power-off me-2"></i>
-                        <span class="align-middle">Đăng xuất</span>
-                      </a>
+                      <div class="" aria-labelledby="">
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    <i class="bx bx-power-off me-2"></i>
+                                    <span class="align-middle">Đăng xuất</span>
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                        </div>
                     </li>
                   </ul>
                 </li>

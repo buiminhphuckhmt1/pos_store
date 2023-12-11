@@ -18,7 +18,7 @@ class UserResource extends JsonResource
         return [
             'id'=> $this->id,
             'phone' => $this->phone,
-            'avatar' => $this->avatar,
+            'image_url' => Storage::url($this->image),
             'role_id'=>$role_id,
             'last_name'=> $this->last_name,
             'created_at' => $this->created_at

@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\PurchasesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
     Route::resource('products', ProductController::class);
     Route::resource('suppliers', SupplierController::class);
+    Route::resource('purchases', PurchasesController::class);
     Route::resource('users', UserController::class);
     Route::resource('categorys', CategoryController::class);
     Route::resource('brands', BrandController::class);

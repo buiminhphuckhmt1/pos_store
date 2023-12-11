@@ -26,16 +26,10 @@ class UserStoreRequest extends FormRequest
         return [
             'last_name' => 'required|string|max:255|unique:users',
             'phone' => 'required|string|max:255|unique:users',
-            'email' => [
-                'required',
-                'email',
-                'max:50',
-                Rule::unique('users', 'email')->ignore($this->user)
-            ],
-            'avatar' => 'nullable|avatar',
+            'email' => 'required|email|max:50|unique:users',
+            'image' => 'nullable|image',
             'role_id' => 'required|integer',
-            'password' => 'required_with:password_confirmation|min:6',
-            'password_confirmation' => 'same:password|min:6',
+            'password' => 'required|string|min:6',
 
         ];
     }

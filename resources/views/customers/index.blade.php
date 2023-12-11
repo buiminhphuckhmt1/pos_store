@@ -3,14 +3,66 @@
 @section('title', 'Danh sách khách hàng')
 @section('content-header', 'Danh sách khách hàng')
 @section('content-actions')
-    <a href="{{route('customers.create')}}" class="btn btn-primary">Thêm khách hàng</a>
-    <a href="" class="btn btn-info"><i class='bx bxs-download'></i>Xuất excel</a>
-    <a href="" class="btn btn-info"><i class='bx bx-up-arrow-alt' ></i></i>Nhập excel</a>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CategoryModal">
+Thêm khách hàng
+</button>
+    <!-- <a href="" class="btn btn-info"><i class='bx bxs-download'></i>Xuất excel</a>
+    <a href="" class="btn btn-info"><i class='bx bx-up-arrow-alt' ></i></i>Nhập excel</a> -->
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
 @endsection
 @section('content')
+<form action="{{ route('customers.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal fade" id="CategoryModal" tabindex="-1" aria-hidden="true" style="display: none;">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Thêm khách hàng</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                <div class="form-group">
+                    <label for="last_name">Họ và tên</label>
+                    <input type="text" name="last_name" class="form-control @error('last_name') is-invalid @enderror"
+                           id="last_name"
+                           placeholder="Họ và tên" value="{{ old('last_name') }}">
+                    @error('last_name')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Số điên thoại</label>
+                    <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" id="phone"
+                           placeholder="Số đien thoại" value="{{ old('phone') }}">
+                    @error('phone')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Địa chỉ</label>
+                    <input type="text" name="address" class="form-control @error('address') is-invalid @enderror"
+                           id="address"
+                           placeholder="Địa chỉ" value="{{ old('address') }}">
+                    @error('address')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+                <button class="btn btn-primary mt-3" type="submit">Tạo</button>
+                </div>
+                </div>
+             </div>
+            </div>
+            </form>
     <div class="card">
         <div class="card-body">
             <table class="table">
@@ -38,52 +90,68 @@
                                 <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ route('customers.edit', $customer) }}"><i class="bx bx-edit-alt me-1"></i> Sửa</a>
+                                <button class="dropdown-item btn" data-bs-toggle="modal" data-bs-target="#CategoryeditModal{{$customer->id}}"><i class="bx bx-edit-alt me-1"></i>Sửa</button>
                                 <a class="dropdown-item" href="{{route('customers.destroy', $customer)}}" onclick="return window.confirm('Bạn có xác nhận xóa không');"><i class="bx bx-trash me-1"></i> Xóa</a>
                                 </div>
                             </div>
                         </td>
                     </tr>
+                    <form action="{{ route('customers.update', $customer) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="modal fade" id="CategoryeditModal{{$customer->id}}" tabindex="-1" aria-hidden="true" style="display: none;">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Sửa thương hiệu</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                <div class="form-group">
+                    <label for="last_name">Họ và tên</label>
+                    <input type="text" name="last_name" class="form-control @error('last_name') is-invalid @enderror"
+                           id="last_name"
+                           placeholder="Họ và tên" value="{{ old('last_name', $customer->last_name) }}">
+                    @error('last_name')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">SĐT</label>
+                    <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" id="phone"
+                           placeholder="Số điện thoại" value="{{ old('phone', $customer->phone) }}">
+                    @error('phone')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Địa chỉ</label>
+                    <input type="text" name="address" class="form-control @error('address') is-invalid @enderror"
+                           id="address"
+                           placeholder="Địa chỉ" value="{{ old('address', $customer->address) }}">
+                    @error('address')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+                <button class="btn btn-primary mt-3" type="submit">Cập nhật</button>
+                </div>
+                </div>
+                </div>
+                </div>
+            </form>
                 @endforeach
                 </tbody>
             </table>
             {{ $customers->render() }}
         </div>
     </div>
-@endsection
-
-@section('js')
-    <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-    <script>
-        $(document).ready(function () {
-            $(document).on('click', '.btn-delete', function () {
-                $this = $(this);
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
-                    },
-                    buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                    title: 'Are you sure?',
-                    text: "Do you really want to delete this customer?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'No',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.value) {
-                        $.post($this.data('url'), {_method: 'DELETE', _token: '{{csrf_token()}}'}, function (res) {
-                            $this.closest('tr').fadeOut(500, function () {
-                                $(this).remove();
-                            })
-                        })
-                    }
-                })
-            })
-        })
-    </script>
 @endsection

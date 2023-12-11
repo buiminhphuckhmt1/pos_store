@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserStoreRequest;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserController extends Controller
 {
@@ -17,13 +20,15 @@ class UserController extends Controller
      */
     public function index()
     {
+        $roles = new Role();
+        $roles = $roles->latest()->paginate(100);
         if (request()->wantsJson()) {
             return response(
                 User::all()
             );
         }
         $users = User::latest()->paginate(10);
-        return view('users.index')->with('users', $users);
+        return view('users.index',compact('users', 'roles'));
     }
 
     /**
@@ -44,17 +49,28 @@ class UserController extends Controller
      */
     public function store(UserStoreRequest $request)
     {
+        $image_path = '';
+
+        if ($request->hasFile('image')) {
+            $image_path = $request->file('image')->store('users', 'public');
+        }
+        else{
+            $image_path = 'products/defaulppicture.jpg';
+        }
+        
         $user = User::create([
+            'image' => $image_path,
             'last_name' => $request->last_name,
             'phone' => $request->phone,
-            'address' => $request->address,
-            'user_id' => $request->user()->id,
+            'email' => $request->email,
+            'role_id' => $request->role_id,
+            'password' => Hash::make($request->password),
         ]);
 
         if (!$user) {
-            return redirect()->back()->with('Lỗi', 'Xin lỗi đã gặp vấn đề trong lúc tạo khách hàng mới.');
+            return redirect()->back()->with('Lỗi', 'Xin lỗi đã gặp vấn đề trong lúc tạo người dùng mới.');
         }
-        return redirect()->route('users.index')->with('Thành công', 'Đã tạo khách hàng mới thành công.');
+        return redirect()->route('users.index')->with('success', 'Đã tạo người dùng mới thành công.');
     }
 
     /**
@@ -89,13 +105,27 @@ class UserController extends Controller
     {
         $user->last_name = $request->last_name;
         $user->phone = $request->phone;
-        $user->address = $request->address;
-
+        $user->email = $request->email;
+        $user->role_id = $request->role_id;
+        if ($request->password != 'null') {
+            $user->password =Hash::make($request->password);
+        } 
+            
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($user->image) {
+                Storage::delete($user->image);
+            }
+            // Store image
+            $image_path = $request->file('image')->store('users', 'public');
+            // Save to Database
+            $user->image = $image_path;
+        }
 
         if (!$user->save()) {
-            return redirect()->back()->with('Lỗi', 'Xin lỗi, đã gặp vấn đền trong lúc cập nhật khách hàng.');
+            return redirect()->back()->with('error', 'Xin lỗi, đã gặp vấn đền trong lúc cập nhật khách hàng.');
         }
-        return redirect()->route('users.index')->with('Thành công', 'Đã cập nhật thông tin khách hàng thành công.');
+        return redirect()->route('users.index')->with('success', 'Đã cập nhật thông tin người dùng thành công.');
     }
 
     public function destroy(User $user)
