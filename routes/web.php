@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\PurchaController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
@@ -28,7 +29,6 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
     Route::resource('products', ProductController::class);
     Route::resource('suppliers', SupplierController::class);
-    Route::resource('purchases', PurchasesController::class);
     Route::resource('users', UserController::class);
     Route::resource('categorys', CategoryController::class);
     Route::resource('brands', BrandController::class);
@@ -41,4 +41,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/cart/change-qty', [CartController::class, 'changeQty']);
     Route::delete('/cart/delete', [CartController::class, 'delete']);
     Route::delete('/cart/empty', [CartController::class, 'empty']);
+    Route::get('/purcha', [PurchaController::class, 'index'])->name('purcha.index');
+    Route::post('/purcha', [PurchaController::class, 'store'])->name('purcha.store');
+    Route::post('/purcha/change-qty', [PurchaController::class, 'changeQty']);
+    Route::delete('/purcha/delete', [PurchaController::class, 'delete']);
+    Route::delete('/purcha/empty', [PurchaController::class, 'empty']);
 });

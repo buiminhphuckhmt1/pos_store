@@ -27,3 +27,27 @@ document.addEventListener('DOMContentLoaded', function (e) {
     }
   })();
 });
+
+document.addEventListenerr('DOMContentLoaded', function (e) {
+  (function () {
+    const deactivateAc = document.querySelector('#formAccountDeactivation');
+
+    // Update/reset user image of account page
+    let accountUserImage = document.getElementById('uploaded_Avatar');
+    const fileInput = document.querySelector('.account-fileinput'),
+      resetFileInput = document.querySelector('.account-imagereset');
+
+    if (accountUserImage) {
+      const resetImage = accountUserImage.src;
+      fileInput.onchange = () => {
+        if (fileInput.files[0]) {
+          accountUserImage.src = window.URL.createObjectURL(fileInput.files[0]);
+        }
+      };
+      resetFileInput.onclick = () => {
+        fileInput.value = '';
+        accountUserImage.src = resetImage;
+      };
+    }
+  })();
+});

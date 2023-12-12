@@ -4,18 +4,17 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { sum } from "lodash";
 
-class Cart extends Component {
+class Purcha extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cart: [],
+            purcha: [],
             products: [],
-            customers: [],
-            qty: [],
+            suppliers: [],
             barcode: "",
             discount: 0,
             search: "",
-            customer_id: "",
+            supplier_id: "",
             total: 0,
             totalBill: 0
         };
@@ -31,28 +30,21 @@ class Cart extends Component {
         this.loadProducts = this.loadProducts.bind(this);
         this.handleChangeSearch = this.handleChangeSearch.bind(this);
         this.handleSeach = this.handleSeach.bind(this);
-        this.setCustomerId = this.setCustomerId.bind(this);
+        this.setSupplierId = this.setSupplierId.bind(this);
         this.handleClickSubmit = this.handleClickSubmit.bind(this);
     }
 
     componentDidMount() {
-        // load user cart
+        // load user purcha
         this.loadCart();
-        this.loadqty();
         this.loadProducts();
-        this.loadCustomers();
+        this.loadSuppliers();
     }
 
-    loadCustomers() {
-        axios.get(`/admin/customers`).then((res) => {
-            const customers = res.data;
-            this.setState({ customers });
-        });
-    }
-    loadqty() {
-        axios.get(`/admin/customers`).then((res) => {
-            const qtys = res.data;
-            this.setState({ qtys });
+    loadSuppliers() {
+        axios.get(`/admin/suppliers`).then((res) => {
+            const suppliers = res.data;
+            this.setState({ suppliers });
         });
     }
 
@@ -64,7 +56,6 @@ class Cart extends Component {
         });
     }
 
-
     handleOnChangeBarcode(event) {
         const barcode = event.target.value;
         console.log(barcode);
@@ -72,9 +63,9 @@ class Cart extends Component {
     }
 
     loadCart() {
-        axios.get("/admin/cart").then((res) => {
-            const cart = res.data;
-            this.setState({ cart });
+        axios.get("/admin/purcha").then((res) => {
+            const purcha = res.data;
+            this.setState({ purcha });
         });
     }
     handleClickadd() {
@@ -89,12 +80,12 @@ class Cart extends Component {
             showLoaderOnConfirm: true,
             preConfirm: function () {
                 let data = {
-                    'last_name' : $('#swal-input1').val(),
+                    'name' : $('#swal-input1').val(),
                     'phone' : $('#swal-input2').val(),
                     'address' : $('#swal-input3').val()
                 };
                 return axios
-                    .post("/admin/customers", data)
+                    .post("/admin/suppliers", data)
                     .then((res) => {
                         Swal.fire({
                             icon: 'success',
@@ -116,7 +107,7 @@ class Cart extends Component {
         const { barcode } = this.state;
         if (!!barcode) {
             axios
-                .post("/admin/cart", { barcode })
+                .post("/admin/purcha", { barcode })
                 .then((res) => {
                     this.loadCart();
                     this.setState({ barcode: "" });
@@ -127,18 +118,18 @@ class Cart extends Component {
         }
     }
     handleChangeQty(product_id, qty) {
-        const cart = this.state.cart.map((c) => {
+        const purcha = this.state.purcha.map((c) => {
             if (c.id === product_id) {
                 c.pivot.quantity = qty;
             }
             return c;
         });
 
-        this.setState({ cart });
+        this.setState({ purcha });
         if (!qty) return;
 
         axios
-            .post("/admin/cart/change-qty", { product_id, quantity: qty })
+            .post("/admin/purcha/change-qty", { product_id, quantity: qty })
             .then((res) => {})
             .catch((err) => {
                 Swal.fire("Error!", err.response.data.message, "error");
@@ -149,22 +140,22 @@ class Cart extends Component {
         console.log(discount);
         this.setState({discount: parseFloat(discount)});
     }
-    getTotal(cart) {
-        let total = sum(cart.map((c) => c.pivot.quantity * c.outputprice));
+    getTotal(purcha) {
+        let total = sum(purcha.map((c) => c.pivot.quantity * c.outputprice));
         // this.setState({total: parseFloat(total)});
         return total;
     }
     handleClickDelete(product_id) {
         axios
-            .post("/admin/cart/delete", { product_id, _method: "DELETE" })
+            .post("/admin/purcha/delete", { product_id, _method: "DELETE" })
             .then((res) => {
-                const cart = this.state.cart.filter((c) => c.id !== product_id);
-                this.setState({ cart });
+                const purcha = this.state.purcha.filter((c) => c.id !== product_id);
+                this.setState({ purcha });
             });
     }
     handleEmptyCart() {
-        axios.post("/admin/cart/empty", { _method: "DELETE" }).then((res) => {
-            this.setState({ cart: [] });
+        axios.post("/admin/purcha/empty", { _method: "DELETE" }).then((res) => {
+            this.setState({ purcha: [] });
         });
     }
     handleChangeSearch(event) {
@@ -180,12 +171,12 @@ class Cart extends Component {
     addProductToCart(barcode) {
         let product = this.state.products.find((p) => p.barcode === barcode);
         if (!!product) {
-            // if product is already in cart
-            let cart = this.state.cart.find((c) => c.id === product.id);
-            if (!!cart) {
+            // if product is already in purcha
+            let purcha = this.state.purcha.find((c) => c.id === product.id);
+            if (!!purcha) {
                 // update quantity
                 this.setState({
-                    cart: this.state.cart.map((c) => {
+                    purcha: this.state.purcha.map((c) => {
                         if (
                             c.id === product.id &&
                             product.quantity > c.pivot.quantity
@@ -206,14 +197,14 @@ class Cart extends Component {
                         },
                     };
 
-                    this.setState({ cart: [...this.state.cart, product] });
+                    this.setState({ purcha: [...this.state.purcha, product] });
                 }
             }
             
             axios
-                .post("/admin/cart", { barcode })
+                .post("/admin/purcha", { barcode })
                 .then((res) => {
-                    this.loadCart();
+                    // this.loadCart();
                     console.log(res);
                 })
                 .catch((err) => {
@@ -222,8 +213,8 @@ class Cart extends Component {
         }
     }
 
-    setCustomerId(event) {
-        this.setState({ customer_id: event.target.value });
+    setSupplierId(event) {
+        this.setState({ supplier_id: event.target.value });
     }
     handleClickSubmit() {
         Swal.fire({
@@ -238,7 +229,7 @@ class Cart extends Component {
             preConfirm: (amount) => {
                 return axios
                     .post("/admin/orders", {
-                        customer_id: this.state.customer_id,
+                        supplier_id: this.state.supplier_id,
                         discount: this.state.discount,
                         amount,
                         
@@ -266,7 +257,7 @@ class Cart extends Component {
     componentDidUpdate(prevProps, prevState) {
         // Kiểm tra nếu giỏ hàng, giảm giá, hoặc giá sản phẩm thay đổi
         if (
-          prevState.cart !== this.state.cart ||
+          prevState.purcha !== this.state.purcha ||
           prevState.discount !== this.state.discount ||
           prevState.products !== this.state.products
         ) {
@@ -274,7 +265,7 @@ class Cart extends Component {
         }
       }
       calculateTotalBill = () =>{
-        let total = sum(this.state.cart.map((c) => c.pivot.quantity * c.outputprice));
+        let total = sum(this.state.purcha.map((c) => c.pivot.quantity * c.outputprice));
         let totalBill = total - this.state.discount;
         totalBill = totalBill>0? totalBill: 0;
         this.setState({
@@ -283,7 +274,7 @@ class Cart extends Component {
         });
       }
     render() {
-        const { cart, products, customers, barcode } = this.state;
+        const { purcha, products, suppliers, barcode } = this.state;
         return (
             <div className="row">
                 <div class="d-none" id="printTable">
@@ -320,7 +311,7 @@ class Cart extends Component {
                                         </thead>
                                         <tbody>
                                             <tr>                                        
-                                                <td><h1>{customers.last_name}</h1></td>                                         
+                                                <td><h1>{suppliers.name}</h1></td>                                         
                                                 <td class="d-flex justify-content-end"> <h2>No:/</h2></td>
                                             </tr>
                                             <tr>
@@ -349,7 +340,7 @@ class Cart extends Component {
                                 </div>
                                     </thead>
                                     <tbody>
-                                    {cart.map((c) => (
+                                    {purcha.map((c) => (
                                         <tr key={c.id} class="" text-align="center">
                                             <td class="d-flex justify-content-begin overflow-hidden"><h2>{c.name}</h2></td>
                                             <th class=""><h2>{c.description}</h2></th>
@@ -417,7 +408,7 @@ class Cart extends Component {
                                             <td></td>
                                         </tr>
                                         <tr>
-                                        <th><h3>{this.state.last_name}</h3></th>
+                                        <th><h3>{this.state.name}</h3></th>
                                         <td></td>
                                         <th><h3></h3></th>
                                         </tr>
@@ -438,7 +429,7 @@ class Cart extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="col-md-6 col-lg-4">
+                <div className="col-md-12 col-lg-12">
                     <div className="row mb-2">
                         <div className="col">
                             <form onSubmit={this.handleScanBarcode}>
@@ -451,17 +442,28 @@ class Cart extends Component {
                                 />
                             </form>
                         </div>
+                        <div className="col">
+                            <div className="mb-2">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Search Product..."
+                                    onChange={this.handleChangeSearch}
+                                    onKeyDown={this.handleSeach}
+                                />
+                            </div>
+                        </div>
                         <div className="col d-flex ">
                             <select
                                 className="form-control"
-                                onChange={this.setCustomerId}
+                                onChange={this.setSupplierId}
                             >
-                                <option value="">Khách lẻ</option>
-                                {customers.map((cus) => (
+                                <option value="">Chọn nhà phân phối</option>
+                                {suppliers.map((cus) => (
                                     <option
                                         key={cus.id}
                                         value={cus.id}
-                                    >{`${cus.last_name}`}</option>
+                                    >{`${cus.name}`}</option>
                                 ))}
                             </select>
                             <div class="input-group-append">
@@ -488,7 +490,7 @@ class Cart extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {cart.map((c) => (
+                                    {purcha.map((c) => (
                                         <tr key={c.id}>
                                             <td class="overflow-hidden">{c.name}</td>
                                             <td>{c.description}</td>
@@ -560,7 +562,7 @@ class Cart extends Component {
                                 type="button"
                                 className="btn btn-danger btn-block"
                                 onClick={this.handleEmptyCart}
-                                disabled={!cart.length}
+                                disabled={!purcha.length}
                             >
                                 Hủy
                             </button>
@@ -569,7 +571,7 @@ class Cart extends Component {
                             <button
                                 type="button"
                                 className="btn btn-primary btn-block"
-                                disabled={!cart.length}
+                                disabled={!purcha.length}
                                 onClick={this.handleClickSubmit}
                             >
                                 Tạo hóa đơn
@@ -577,52 +579,14 @@ class Cart extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="col-md-6 col-lg-8">
-                    <div className="mb-2">
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Search Product..."
-                            onChange={this.handleChangeSearch}
-                            onKeyDown={this.handleSeach}
-                        />
-                    </div>
-                    <div className="order-product">
-                        <div className="row">
-                           
-                        <div class="col-md-12 d-flex flex-row flex-wrap bd-highlight list-item mt-2 overflow-auto vh-100">
-                            {products.map((p) => (
-                                <div class="col-xl-2 col-md-4 col-6 p-1">
-                            <div onClick={() => this.addProductToCart(p.barcode)}
-                            key={p.id} class="card overflow-hidden bd-highlight">
-                                <div class="list-thumb d-flex  justify-content-center">
-                                    <img src={p.image_url} height="100px" width="100%"/>
-                                </div> 
-                                <div class="flex-grow-1 d-bock">
-                                    <div class="card-body align-self-center d-flex flex-column justify-content-between align-items-lg-center">
-                                        <div class="w-40 w-sm-100 item-title ct-inline">{p.name}</div> 
-                                        <p class="text-muted text-black-50 w-15 w-sm-100 mb-1">{p.barcode}</p>
-                                        <span class=" w-sm-100">{p.outputprice}{window.APP.currency_symbol}</span>  
-                                        <p class="position-absolute m-0 text-muted text-small w-15 w-sm-100 d-none d-lg-block item-badges top-1 right-1" >
-                                            <span class="badge bg-label-primary me-1">{p.quantity} {p.unit_purchas}</span>
-                                        </p>                                    
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            ))}
-                        </div>
-                        </div>
-                    </div>
-                </div> 
             </div>
         );
     }
 }
 
-export default Cart;
+export default Purcha;
 
-if (document.getElementById("cart")) {
-    ReactDOM.render(<Cart />, document.getElementById("cart"));
+if (document.getElementById("purcha")) {
+    ReactDOM.render(<Purcha />, document.getElementById("purcha"));
 }
 

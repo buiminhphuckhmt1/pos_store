@@ -100,7 +100,7 @@
                         <div class="d-flex">
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
-                              <img src="/storage/products/logo.png" alt="" class="w-px-40 h-auto rounded-circle">
+                              <img src="{{ Storage::url(auth()->user()->image) }}" alt="" class="w-px-40 h-auto rounded-circle">
                             </div>
                           </div>
                           <div class="flex-grow-1">
@@ -114,7 +114,7 @@
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#">
+                      <a class="dropdown-item" href="">
                         <i class="bx bx-user me-2"></i>
                         <span class="align-middle">Thông tin cá nhân</span>
                       </a>

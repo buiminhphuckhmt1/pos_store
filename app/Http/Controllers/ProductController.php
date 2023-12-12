@@ -7,6 +7,7 @@ use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\ProductVariant;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -20,6 +21,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        $qty = new ProductVariant();
         $categorys = new Category();
         $categorys = $categorys->latest()->paginate(100);
         $brands = new Brand();
@@ -75,8 +77,9 @@ class ProductController extends Controller
         if (request()->wantsJson()) {
             return ProductResource::collection($products);
         }
-        return view('products.index',compact('products', 'brands','categorys'));
+        return view('products.index',compact('products', 'brands','categorys','qty'));
     }
+
 
    
 

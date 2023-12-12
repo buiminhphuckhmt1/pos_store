@@ -3,33 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 
-class CartController extends Controller
+class PurchaController extends Controller
 {
     public function index(Request $request)
     {
         if ($request->wantsJson()) {
             return response(
-                $request->user()->cart()->productvariant()->get()
+                $request->user()->purcha()->get()
             );
         }
-        return view('cart.index');
+        return view('purcha.index');
     }
-    public function storecus(CustomerStoreRequest $request)
+    public function storecus(SupplierStoreRequest $request)
     {
-        $customer = Customer::create([
-            'last_name' => $request->last_name,
+        $supplier = Supplier::create([
+            'name' => $request->last_name,
             'phone' => $request->phone,
             'address' => $request->address,
             'user_id' => $request->user()->id,
         ]);
 
-        if (!$customer) {
+        if (!$supplier) {
             return redirect()->back()->with('Lỗi', 'Xin lỗi đã gặp vấn đề trong lúc tạo khách hàng mới.');
         }
-        return redirect()->route('customers.index')->with('Thành công', 'Đã tạo khách hàng mới thành công.');
+        return redirect()->route('suppliers.index')->with('Thành công', 'Đã tạo khách hàng mới thành công.');
     }
     public function store(Request $request)
     {
@@ -39,24 +38,24 @@ class CartController extends Controller
         $barcode = $request->barcode;
 
         $product = Product::where('barcode', $barcode)->first();
-        $cart = $request->user()->cart()->where('barcode', $barcode)->first();
-        if ($cart) {
+        $purcha = $request->user()->purcha()->where('barcode', $barcode)->first();
+        if ($purcha) {
             // check product quantity
-            if ($qty = ProductVariant::where('product_id', $product->id)->sum('qty') <= $cart->pivot->quantity) {
+            if ($product->quantity <= $purcha->pivot->quantity) {
                 return response([
                     'message' => 'Sản phẩm có sẵn: ' . $product->quantity,
                 ], 400);
             }
             // update only quantity
-            $cart->pivot->quantity = $cart->pivot->quantity + 1;
-            $cart->pivot->save();
+            $purcha->pivot->quantity = $purcha->pivot->quantity + 1;
+            $purcha->pivot->save();
         } else {
-            if ($qty = ProductVariant::where('product_id', $product->id)->sum('qty') < 1) {
+            if ($product->quantity < 1) {
                 return response([
                     'message' => 'Sản phẩm đã hết',
                 ], 400);
             }
-            $request->user()->cart()->attach($product->id, ['quantity' => 1]);
+            $request->user()->purcha()->attach($product->id, ['quantity' => 1]);
         }
 
         return response('', 204);
@@ -70,17 +69,17 @@ class CartController extends Controller
         ]);
 
         $product = Product::find($request->product_id);
-        $cart = $request->user()->cart()->where('id', $request->product_id)->first();
+        $purcha = $request->user()->purcha()->where('id', $request->product_id)->first();
 
-        if ($cart) {
+        if ($purcha) {
             // check product quantity
             if ($product->quantity < $request->quantity) {
                 return response([
                     'message' => 'Sản phẩm có sẵn: ' . $product->quantity,
                 ], 400);
             }
-            $cart->pivot->quantity = $request->quantity;
-            $cart->pivot->save();
+            $purcha->pivot->quantity = $request->quantity;
+            $purcha->pivot->save();
         }
 
         return response([
@@ -93,14 +92,14 @@ class CartController extends Controller
         $request->validate([
             'product_id' => 'required|integer|exists:products,id'
         ]);
-        $request->user()->cart()->detach($request->product_id);
+        $request->user()->purcha()->detach($request->product_id);
 
         return response('', 204);
     }
 
     public function empty(Request $request)
     {
-        $request->user()->cart()->detach();
+        $request->user()->purcha()->detach();
 
         return response('', 204);
     }

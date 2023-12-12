@@ -9,8 +9,12 @@ class ProductVariant extends Model
     protected $table = 'product_variants';
 
     protected $fillable = [
-        'product_id', 'name', 'qty','cost','price','code','image'
+        'product_id', 'qty','cost','price','code'
     ];
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
 
     protected $casts = [
         'product_id' => 'integer',

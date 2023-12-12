@@ -20,7 +20,9 @@ class SupplierController extends Controller
         }
         $suppliers = $suppliers->latest()->paginate(10);
         if (request()->wantsJson()) {
-            return SupplierResource::collection($suppliers);
+            return response(
+                Supplier::all()
+            );
         }
         return view('suppliers.index')->with('suppliers', $suppliers);
     }

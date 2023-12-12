@@ -18,16 +18,20 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $users = new User();
         $roles = new Role();
         $roles = $roles->latest()->paginate(100);
+        if ($request->search) {
+            $users = $users->where('last_name', 'LIKE', "%{$request->search}%");
+        }
+        $users = $users->latest()->paginate(10);
         if (request()->wantsJson()) {
             return response(
                 User::all()
             );
         }
-        $users = User::latest()->paginate(10);
         return view('users.index',compact('users', 'roles'));
     }
 

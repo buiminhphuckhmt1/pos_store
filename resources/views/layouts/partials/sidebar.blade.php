@@ -61,8 +61,8 @@
                   </a>
                 </li>
                 
-                <li class="menu-item {{ activeSegment('purchases') }}" >
-                  <a href="{{ route('purchases.index') }}" class="menu-link">
+                <li class="menu-item {{ activeSegment('purcha') }}" >
+                  <a href="{{ route('purcha.index') }}" class="menu-link">
                     <div data-i18n="Tables">Nhập hàng</div>
                   </a>
                 </li>

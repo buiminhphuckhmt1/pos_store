@@ -203,15 +203,11 @@ Thêm người dùng
                                         <div class="d-flex justify-content-left">
                                           <img src="{{ Storage::url($user->image) }}"  alt="" class="d-block rounded border border-2 border-light me-2" height="110" width="110" id="uploadedAvatar">
                                           <div class="d-flex flex-column justify-content-center">
-                                              <label for="upload" class="btn btn-primary " tabindex="0">
+                                              <label class="btn btn-primary " tabindex="0">
                                                   <span class="d-none d-sm-block">Tải ảnh lên</span>
                                                   <i class="bx bx-upload d-block d-sm-none"></i>
-                                                  <input  type="file" name="image" id="upload" class="account-file-input" hidden="" accept="image/png, image/jpeg">
+                                                  <input  type="file" name="image"  hidden="" accept="image/png, image/jpeg">
                                               </label>
-                                              <button type="button" class="btn btn-outline-secondary account-image-reset mt-2">
-                                                  <i class="bx bx-reset d-block d-sm-none"></i>
-                                                  <span class="d-none d-sm-block">Định dạng</span>
-                                              </button>
                                           </div>
                                       </div>
                                       
@@ -221,6 +217,7 @@ Thêm người dùng
                                           <strong>{{ $message }}</strong>
                                       </span>
                                       @enderror
+                                    
                                         </div>
                                     </div>
 
