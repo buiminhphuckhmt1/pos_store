@@ -53,6 +53,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Product::class, 'user_cart')->withPivot('quantity');
     }
 
+    public function purcha()
+    {
+        return $this->belongsToMany(Product::class, 'user_purchas')->withPivot('quantity');
+    }
+
     public function getAvatar()
     {
         return 'https://www.gravatar.com/avatar/' . md5($this->email);

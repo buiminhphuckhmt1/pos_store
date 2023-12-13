@@ -11,7 +11,6 @@ class Cart extends Component {
             cart: [],
             products: [],
             customers: [],
-            qty: [],
             barcode: "",
             discount: 0,
             search: "",
@@ -38,7 +37,6 @@ class Cart extends Component {
     componentDidMount() {
         // load user cart
         this.loadCart();
-        this.loadqty();
         this.loadProducts();
         this.loadCustomers();
     }
@@ -47,12 +45,6 @@ class Cart extends Component {
         axios.get(`/admin/customers`).then((res) => {
             const customers = res.data;
             this.setState({ customers });
-        });
-    }
-    loadqty() {
-        axios.get(`/admin/customers`).then((res) => {
-            const qtys = res.data;
-            this.setState({ qtys });
         });
     }
 
@@ -625,4 +617,3 @@ export default Cart;
 if (document.getElementById("cart")) {
     ReactDOM.render(<Cart />, document.getElementById("cart"));
 }
-

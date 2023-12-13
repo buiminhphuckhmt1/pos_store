@@ -73,7 +73,7 @@ class ProductController extends Controller
         elseif ($request->brand_id) {
             $products = $products->where('brand_id', 'LIKE', "{$request->brand_id}");
         }
-        $products = $products->latest()->paginate(10);
+        $products = $products->latest()->paginate(100);
         if (request()->wantsJson()) {
             return ProductResource::collection($products);
         }

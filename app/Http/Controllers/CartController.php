@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -12,7 +11,7 @@ class CartController extends Controller
     {
         if ($request->wantsJson()) {
             return response(
-                $request->user()->cart()->productvariant()->get()
+                $request->user()->cart()->get()
             );
         }
         return view('cart.index');
@@ -42,18 +41,18 @@ class CartController extends Controller
         $cart = $request->user()->cart()->where('barcode', $barcode)->first();
         if ($cart) {
             // check product quantity
-            if ($qty = ProductVariant::where('product_id', $product->id)->sum('qty') <= $cart->pivot->quantity) {
+            if ($product->quantity <= $cart->pivot->quantity) {
                 return response([
-                    'message' => 'Sản phẩm có sẵn: ' . $product->quantity,
+                    'message' => 'Product available only: ' . $product->quantity,
                 ], 400);
             }
             // update only quantity
             $cart->pivot->quantity = $cart->pivot->quantity + 1;
             $cart->pivot->save();
         } else {
-            if ($qty = ProductVariant::where('product_id', $product->id)->sum('qty') < 1) {
+            if ($product->quantity < 1) {
                 return response([
-                    'message' => 'Sản phẩm đã hết',
+                    'message' => 'Product out of stock',
                 ], 400);
             }
             $request->user()->cart()->attach($product->id, ['quantity' => 1]);
@@ -76,7 +75,7 @@ class CartController extends Controller
             // check product quantity
             if ($product->quantity < $request->quantity) {
                 return response([
-                    'message' => 'Sản phẩm có sẵn: ' . $product->quantity,
+                    'message' => 'Product available only: ' . $product->quantity,
                 ], 400);
             }
             $cart->pivot->quantity = $request->quantity;

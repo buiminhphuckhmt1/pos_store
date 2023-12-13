@@ -22,7 +22,6 @@ class Purcha extends Component {
         this.loadCart = this.loadCart.bind(this);
         this.handleOnChangeBarcode = this.handleOnChangeBarcode.bind(this);
         this.handleScanBarcode = this.handleScanBarcode.bind(this);
-        this.handleClickadd = this.handleClickadd.bind(this);
         this.handleOnChangeDisscount = this.handleOnChangeDisscount.bind(this);
         this.handleChangeQty = this.handleChangeQty.bind(this);
         this.handleEmptyCart = this.handleEmptyCart.bind(this);
@@ -66,39 +65,6 @@ class Purcha extends Component {
         axios.get("/admin/purcha").then((res) => {
             const purcha = res.data;
             this.setState({ purcha });
-        });
-    }
-    handleClickadd() {
-        Swal.fire({
-            title: "Tạo Khách hàng mới",
-            html:'<p>Họ Và Tên:</p>'+'<input id="swal-input1" class="swal2-input">' +
-                 '<p>Số Điện Thoại:</p>'+'<input id="swal-input2" class="swal2-input">' +
-                 '<p>Địa chỉ:</p>'+'<input id="swal-input3" class="swal2-input">',
-            showCancelButton: true,
-            cancelButtonText: "Hủy",
-            confirmButtonText: "Tạo",
-            showLoaderOnConfirm: true,
-            preConfirm: function () {
-                let data = {
-                    'name' : $('#swal-input1').val(),
-                    'phone' : $('#swal-input2').val(),
-                    'address' : $('#swal-input3').val()
-                };
-                return axios
-                    .post("/admin/suppliers", data)
-                    .then((res) => {
-                        Swal.fire({
-                            icon: 'success',
-                            title: `Tạo khách hàng thành công`,
-                            showConfirmButton: false,
-                            timer: 1500
-                          })
-                    })
-                    .catch((err) => {
-                        Swal.showValidationMessage(err.response.data.message);
-                    })
-            },
-            allowOutsideClick: () => !Swal.isLoading(),
         });
     }
 
@@ -218,30 +184,25 @@ class Purcha extends Component {
     }
     handleClickSubmit() {
         Swal.fire({
-            title: "Tạo Hóa đơn",
-            html:'<p>Số tiền nhận được</p>',
+            title: "Lưu",
+            html:'<p>Số đã thanh toán được</p>',
             input: "text",
             inputValue: this.state.totalBill,
             showCancelButton: true,
             cancelButtonText: "Hủy",
-            confirmButtonText: "Tạo",
+            confirmButtonText: "Lưu",
             showLoaderOnConfirm: true,
             preConfirm: (amount) => {
                 return axios
-                    .post("/admin/orders", {
+                    .post("/admin/purchas", {
                         supplier_id: this.state.supplier_id,
                         discount: this.state.discount,
                         amount,
                         
                     })
                     .then((res) => {
-                        const divToPrint=document.getElementById("printTable");
-                        const    newWin=  window.open("", "PrintWindow", "width=800,height=600");
-                            newWin.document.write(divToPrint.outerHTML);
-                            newWin.print();
-                            newWin.close();
-                        // this.loadCart();
-                        // return res.data;
+                        this.loadCart();
+                        return res.data;
                     })
                     .catch((err) => {
                         Swal.showValidationMessage(err.response.data.message);
@@ -277,158 +238,6 @@ class Purcha extends Component {
         const { purcha, products, suppliers, barcode } = this.state;
         return (
             <div className="row">
-                <div class="d-none" id="printTable">
-                    <div>
-                        <div>
-                            <div>
-                                <table class="table table-striped "  width="100%">
-                                    <tbody>
-                                    <thead>
-                                            <th width="80%"></th>
-                                            <th width="20%"></th>
-                                        </thead>
-                                        <tr>
-                                            <td><h1> Cửa hàng Thân Nguyệt</h1></td>
-                                        </tr>
-                                        <tr>
-                                            <td><h2>ĐC:Ql48B, Quỳnh Châu, Quỳnh Lưu, NA </h2></td>
-                                            <td><h1>HÓA ĐƠN BÁN HÀNG</h1></td>
-                                        </tr>
-                                        <tr>
-                                            <td><h2>SĐT:0329790031-09664726629-0988690507</h2></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div width="100%">_________________________________________________________________________________________________________________________________
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <table class="table table-striped "  width="100%">
-                                        <thead>
-                                            <th width="70%"></th>
-                                            <th width="30%"></th>
-                                        </thead>
-                                        <tbody>
-                                            <tr>                                        
-                                                <td><h1>{suppliers.name}</h1></td>                                         
-                                                <td class="d-flex justify-content-end"> <h2>No:/</h2></td>
-                                            </tr>
-                                            <tr>
-                                                <td><h2>ĐC:</h2></td>
-                                            </tr>
-                                            <tr>
-                                                <td><h2>SĐT:</h2></td>
-                                                <td class="d-flex justify-content-end"> <h2></h2></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="">
-                                <table class="table table-striped" width="100%"  cellpadding="5">
-                                    <thead>
-                                        <tr class="">
-                                            <td width="39%"><h2>Sản phẩm</h2></td>
-                                            <th width="10%"><h2>Đơn vị</h2></th>
-                                            <th width="13%"><h2>Số lượng</h2></th>
-                                            <th width="23%"><h2>Giá bán</h2></th>
-                                            <td><h2>Thành tiền</h2></td>
-                                        </tr>
-                                        <div width="100%">
-                                _________________________________________________________________________________________________________________________________
-                                </div>
-                                    </thead>
-                                    <tbody>
-                                    {purcha.map((c) => (
-                                        <tr key={c.id} class="" text-align="center">
-                                            <td class="d-flex justify-content-begin overflow-hidden"><h2>{c.name}</h2></td>
-                                            <th class=""><h2>{c.description}</h2></th>
-                                            <th class=""><h2>{c.pivot.quantity}</h2></th>
-                                            <th class=""><h2>{c.outputprice}{window.APP.currency_symbol}</h2></th>
-                                            <td class="d-flex justify-content-end"><h2>{c.pivot.quantity*c.outputprice}{window.APP.currency_symbol}</h2></td>
-                                        </tr> 
-                                    ))}
-                                    </tbody>
-                                </table>
-                                <div width="100%">_________________________________________________________________________________________________________________________________</div>
-                                <table class="table table-striped "  width="100%" >
-                                    <thead>
-                                        <tr>
-                                            <th width="70%"></th>
-                                            <th width="15%"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="">
-                                            <td class=""></td>
-                                            <td class=""><h2>Tổng tiền:</h2></td>
-                                            <td class="d-flex justify-content-end"><h2>{this.state.total}{window.APP.currency_symbol} </h2></td>
-                                        </tr>
-                                        <tr class="">
-                                            <td class=""></td>
-                                            <td class=""><h2>Chiết khấu:</h2></td>
-                                            <td class="d-flex justify-content-end"><h2>{this.state.discount}{window.APP.currency_symbol} </h2></td>
-                                        </tr>
-                                    
-                                        <tr class="">
-                                            <td class=""></td>
-                                            <td class=""><h2>Thành tiền:</h2></td>
-                                            <td class="d-flex justify-content-end"><h2>{this.state.totalBill}{window.APP.currency_symbol} </h2></td>
-                                        </tr>
-                                        <tr class="">
-                                            <td class=""></td>
-                                            <td class=""><h2>Đã trả:</h2></td>
-                                            <td class="d-flex justify-content-end"><h2>{window.APP.currency_symbol}</h2></td>
-                                        </tr>
-                                        <tr class="">
-                                            <td class=""></td>
-                                            <td class=""><h2>Dư nợ:</h2></td>
-                                            <td class="d-flex justify-content-end"><h2></h2></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th width="25%"><h2>khách hàng</h2></th>
-                                            <th width="52%"></th>
-                                            <th><h2>Người lập hóa đơn</h2></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <th>.</th>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <th>.</th>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                        <th><h3>{this.state.name}</h3></th>
-                                        <td></td>
-                                        <th><h3></h3></th>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div width="100%">_________________________________________________________________________________________________________________________________</div>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th width="100%"><h2>Cảm ơn quý khách hàng đã mua hàng.</h2></th>
-                                        </tr>
-                                        <tr>
-                                            <th width="100%"><h2>Lưu ý: Chỉ được đổi tra khi hàng hóa còn nguyên vẹn và có hóa đơn! Xin cảm ơn.</h2></th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div className="col-md-12 col-lg-12">
                     <div className="row mb-2">
                         <div className="col">
@@ -441,17 +250,6 @@ class Purcha extends Component {
                                     onChange={this.handleOnChangeBarcode}
                                 />
                             </form>
-                        </div>
-                        <div className="col">
-                            <div className="mb-2">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Search Product..."
-                                    onChange={this.handleChangeSearch}
-                                    onKeyDown={this.handleSeach}
-                                />
-                            </div>
                         </div>
                         <div className="col d-flex ">
                             <select
@@ -466,15 +264,6 @@ class Purcha extends Component {
                                     >{`${cus.name}`}</option>
                                 ))}
                             </select>
-                            <div class="input-group-append">
-                                <button 
-                                type="button" 
-                                class="btn btn-primary"
-                                onClick={this.handleClickadd}
-                                >
-                                    <span><i class='bx bx-user-plus'></i></span>
-                                </button>
-                            </div>
                         </div>
 
                     </div>
@@ -574,7 +363,7 @@ class Purcha extends Component {
                                 disabled={!purcha.length}
                                 onClick={this.handleClickSubmit}
                             >
-                                Tạo hóa đơn
+                                Lưu
                             </button>
                         </div>
                     </div>

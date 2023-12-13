@@ -43,19 +43,12 @@ class PurchaController extends Controller
             // check product quantity
             if ($product->quantity <= $purcha->pivot->quantity) {
                 return response([
-                    'message' => 'Sản phẩm có sẵn: ' . $product->quantity,
+                    'message' => 'Product available only: ' . $product->quantity,
                 ], 400);
             }
             // update only quantity
             $purcha->pivot->quantity = $purcha->pivot->quantity + 1;
             $purcha->pivot->save();
-        } else {
-            if ($product->quantity < 1) {
-                return response([
-                    'message' => 'Sản phẩm đã hết',
-                ], 400);
-            }
-            $request->user()->purcha()->attach($product->id, ['quantity' => 1]);
         }
 
         return response('', 204);
@@ -75,7 +68,7 @@ class PurchaController extends Controller
             // check product quantity
             if ($product->quantity < $request->quantity) {
                 return response([
-                    'message' => 'Sản phẩm có sẵn: ' . $product->quantity,
+                    'message' => 'Product available only: ' . $product->quantity,
                 ], 400);
             }
             $purcha->pivot->quantity = $request->quantity;
@@ -104,3 +97,4 @@ class PurchaController extends Controller
         return response('', 204);
     }
 }
+

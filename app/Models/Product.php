@@ -17,6 +17,7 @@ class Product extends Model
         'unit_purchas',
         'inputprice',
         'outputprice',
+        'quantity',
         'discountpercen',
         'stock_alert',
         'status'
@@ -25,13 +26,12 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
-
     public function brand()
     {
         return $this->belongsTo(Brand::class, 'brand_id', 'id');
     }
-    public function product_variant()
+    public function product()
     {
-        return $this->hasMany(ProductVariant::class, 'product_id', 'id');
+        return $this->hasMany(Product::class, 'product_id', 'id');
     }
 }
