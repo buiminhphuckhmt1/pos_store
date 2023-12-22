@@ -9250,6 +9250,9 @@ button.list-group-item-gray.active {
 .right-1{
   right:10px !important;
 }
+.left-1{
+  left:10px !important;
+}
 .min-vh-100 {
   min-height: 100vh !important;
 }

@@ -133,7 +133,7 @@ class Cart extends Component {
             .post("/admin/cart/change-qty", { product_id, quantity: qty })
             .then((res) => {})
             .catch((err) => {
-                Swal.fire("Error!", err.response.data.message, "error");
+                Swal.fire("Lỗi", err.response.data.message, "error");
             });
     }
     handleOnChangeDisscount(event) {
@@ -209,7 +209,7 @@ class Cart extends Component {
                     console.log(res);
                 })
                 .catch((err) => {
-                    Swal.fire("Error!", err.response.data.message, "error");
+                    Swal.fire("Lỗi", err.response.data.message, "error");
                 });
         }
     }
@@ -574,7 +574,7 @@ class Cart extends Component {
                         <input
                             type="text"
                             className="form-control"
-                            placeholder="Search Product..."
+                            placeholder="Tìm kiếm sản phẩm..."
                             onChange={this.handleChangeSearch}
                             onKeyDown={this.handleSeach}
                         />
@@ -594,10 +594,13 @@ class Cart extends Component {
                                     <div class="card-body align-self-center d-flex flex-column justify-content-between align-items-lg-center">
                                         <div class="w-40 w-sm-100 item-title ct-inline">{p.name}</div> 
                                         <p class="text-muted text-black-50 w-15 w-sm-100 mb-1">{p.barcode}</p>
-                                        <span class=" w-sm-100">{p.outputprice}{window.APP.currency_symbol}</span>  
+                                        <span class=" w-sm-100">{p.outputprice-p.outputprice*p.discountpercen/100}{window.APP.currency_symbol}</span>  
                                         <p class="position-absolute m-0 text-muted text-small w-15 w-sm-100 d-none d-lg-block item-badges top-1 right-1" >
                                             <span class="badge bg-label-primary me-1">{p.quantity} {p.unit_purchas}</span>
-                                        </p>                                    
+                                        </p>  
+                                        <p class="position-absolute m-0 text-muted text-small w-15 w-sm-100 d-none d-lg-block item-badges top-1 left-1" >
+                                            <span class="badge bg-label-danger me-1">-{p.discountpercen}%</span>
+                                        </p>                                   
                                     </div>
                                 </div>
                                 </div>

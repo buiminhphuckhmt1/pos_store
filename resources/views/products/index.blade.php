@@ -11,7 +11,7 @@
 <a href="{{route('brands.index')}}" class="btn btn-primary"></i> Thương hiệu</a>
 <a href="{{route('print.print')}}" class="btn btn-primary"></i> In Nhãn</a>
 <a href="{{route('export.export')}}" class="btn btn-primary"><i class='bx bxs-download'></i> Xuất excel</a>
-<a href="" class="btn btn-primary"><i class='bx bx-up-arrow-alt' ></i> Nhập excel</a>
+<!-- <a href="" class="btn btn-primary"><i class='bx bx-up-arrow-alt' ></i> Nhập excel</a> -->
 <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBoth" aria-controls="offcanvasBoth">
 <i class='bx bx-filter-alt' ></i>Lọc</button>
 @endsection
@@ -120,7 +120,7 @@
                     <td>{{$product->unit_sale}}</td>
                     <td>{{ number_format(($qty->where('product_id', $product->id)->where('id',$qty->where('product_id', $product->id)->max('id'))->first()->cost)) }} {{ config('settings.currency_symbol') }}</td>
                     <td>{{ number_format(($qty->where('product_id', $product->id)->where('id',$qty->where('product_id', $product->id)->max('id'))->first()->price)) }} {{ config('settings.currency_symbol') }}</td>
-                    <td>{{$qty->where('product_id', $product->id)->sum('qty')}}</td>
+                    <td>{{$product->quantity}}</td>
                     <td>{{$product->stock_alert}}</td>
                     <td>
                     @if ($product->status == 1)

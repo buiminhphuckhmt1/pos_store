@@ -4,11 +4,11 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { sum } from "lodash";
 
-class Purcha extends Component {
+class Cargo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            purcha: [],
+            cargo: [],
             products: [],
             suppliers: [],
             barcode: "",
@@ -19,12 +19,12 @@ class Purcha extends Component {
             totalBill: 0
         };
 
-        this.loadCart = this.loadCart.bind(this);
+        this.loadPurcha = this.loadPurcha.bind(this);
         this.handleOnChangeBarcode = this.handleOnChangeBarcode.bind(this);
         this.handleScanBarcode = this.handleScanBarcode.bind(this);
         this.handleOnChangeDisscount = this.handleOnChangeDisscount.bind(this);
         this.handleChangeQty = this.handleChangeQty.bind(this);
-        this.handleEmptyCart = this.handleEmptyCart.bind(this);
+        this.handleEmptyPurcha = this.handleEmptyPurcha.bind(this);
 
         this.loadProducts = this.loadProducts.bind(this);
         this.handleChangeSearch = this.handleChangeSearch.bind(this);
@@ -34,8 +34,8 @@ class Purcha extends Component {
     }
 
     componentDidMount() {
-        // load user purcha
-        this.loadCart();
+        // load user cargo
+        this.loadPurcha();
         this.loadProducts();
         this.loadSuppliers();
     }
@@ -55,16 +55,17 @@ class Purcha extends Component {
         });
     }
 
+
     handleOnChangeBarcode(event) {
         const barcode = event.target.value;
         console.log(barcode);
         this.setState({ barcode });
     }
 
-    loadCart() {
-        axios.get("/admin/purcha").then((res) => {
-            const purcha = res.data;
-            this.setState({ purcha });
+    loadPurcha() {
+        axios.get("/admin/cargo").then((res) => {
+            const cargo = res.data;
+            this.setState({ cargo });
         });
     }
 
@@ -73,9 +74,9 @@ class Purcha extends Component {
         const { barcode } = this.state;
         if (!!barcode) {
             axios
-                .post("/admin/purcha", { barcode })
+                .post("/admin/cargo", { barcode })
                 .then((res) => {
-                    this.loadCart();
+                    this.loadPurcha();
                     this.setState({ barcode: "" });
                 })
                 .catch((err) => {
@@ -84,18 +85,18 @@ class Purcha extends Component {
         }
     }
     handleChangeQty(product_id, qty) {
-        const purcha = this.state.purcha.map((c) => {
+        const cargo = this.state.cargo.map((c) => {
             if (c.id === product_id) {
                 c.pivot.quantity = qty;
             }
             return c;
         });
 
-        this.setState({ purcha });
+        this.setState({ cargo });
         if (!qty) return;
 
         axios
-            .post("/admin/purcha/change-qty", { product_id, quantity: qty })
+            .post("/admin/cargo/change-qty", { product_id, quantity: qty })
             .then((res) => {})
             .catch((err) => {
                 Swal.fire("Error!", err.response.data.message, "error");
@@ -106,22 +107,22 @@ class Purcha extends Component {
         console.log(discount);
         this.setState({discount: parseFloat(discount)});
     }
-    getTotal(purcha) {
-        let total = sum(purcha.map((c) => c.pivot.quantity * c.outputprice));
+    getTotal(cargo) {
+        let total = sum(cargo.map((c) => c.pivot.quantity * c.inputprice));
         // this.setState({total: parseFloat(total)});
         return total;
     }
     handleClickDelete(product_id) {
         axios
-            .post("/admin/purcha/delete", { product_id, _method: "DELETE" })
+            .post("/admin/cargo/delete", { product_id, _method: "DELETE" })
             .then((res) => {
-                const purcha = this.state.purcha.filter((c) => c.id !== product_id);
-                this.setState({ purcha });
+                const cargo = this.state.cargo.filter((c) => c.id !== product_id);
+                this.setState({ cargo });
             });
     }
-    handleEmptyCart() {
-        axios.post("/admin/purcha/empty", { _method: "DELETE" }).then((res) => {
-            this.setState({ purcha: [] });
+    handleEmptyPurcha() {
+        axios.post("/admin/cargo/empty", { _method: "DELETE" }).then((res) => {
+            this.setState({ cargo: [] });
         });
     }
     handleChangeSearch(event) {
@@ -134,15 +135,15 @@ class Purcha extends Component {
         }
     }
 
-    addProductToCart(barcode) {
+    addProductToPurcha(barcode) {
         let product = this.state.products.find((p) => p.barcode === barcode);
         if (!!product) {
-            // if product is already in purcha
-            let purcha = this.state.purcha.find((c) => c.id === product.id);
-            if (!!purcha) {
+            // if product is already in cargo
+            let cargo = this.state.cargo.find((c) => c.id === product.id);
+            if (!!cargo) {
                 // update quantity
                 this.setState({
-                    purcha: this.state.purcha.map((c) => {
+                    cargo: this.state.cargo.map((c) => {
                         if (
                             c.id === product.id &&
                             product.quantity > c.pivot.quantity
@@ -163,14 +164,14 @@ class Purcha extends Component {
                         },
                     };
 
-                    this.setState({ purcha: [...this.state.purcha, product] });
+                    this.setState({ cargo: [...this.state.cargo, product] });
                 }
             }
             
             axios
-                .post("/admin/purcha", { barcode })
+                .post("/admin/cargo", { barcode })
                 .then((res) => {
-                    // this.loadCart();
+                    this.loadPurcha();
                     console.log(res);
                 })
                 .catch((err) => {
@@ -184,8 +185,8 @@ class Purcha extends Component {
     }
     handleClickSubmit() {
         Swal.fire({
-            title: "Lưu",
-            html:'<p>Số đã thanh toán được</p>',
+            title: "Lưu đơn nhập hàng",
+            html:'<p>Số tiền đã hanh toán</p>',
             input: "text",
             inputValue: this.state.totalBill,
             showCancelButton: true,
@@ -194,14 +195,14 @@ class Purcha extends Component {
             showLoaderOnConfirm: true,
             preConfirm: (amount) => {
                 return axios
-                    .post("/admin/purchas", {
+                    .post("/admin/purchars", {
                         supplier_id: this.state.supplier_id,
                         discount: this.state.discount,
                         amount,
                         
                     })
                     .then((res) => {
-                        this.loadCart();
+                        this.loadPurcha();
                         return res.data;
                     })
                     .catch((err) => {
@@ -218,7 +219,7 @@ class Purcha extends Component {
     componentDidUpdate(prevProps, prevState) {
         // Kiểm tra nếu giỏ hàng, giảm giá, hoặc giá sản phẩm thay đổi
         if (
-          prevState.purcha !== this.state.purcha ||
+          prevState.cargo !== this.state.cargo ||
           prevState.discount !== this.state.discount ||
           prevState.products !== this.state.products
         ) {
@@ -226,7 +227,7 @@ class Purcha extends Component {
         }
       }
       calculateTotalBill = () =>{
-        let total = sum(this.state.purcha.map((c) => c.pivot.quantity * c.outputprice));
+        let total = sum(this.state.cargo.map((c) => c.pivot.quantity * c.outputprice));
         let totalBill = total - this.state.discount;
         totalBill = totalBill>0? totalBill: 0;
         this.setState({
@@ -235,10 +236,10 @@ class Purcha extends Component {
         });
       }
     render() {
-        const { purcha, products, suppliers, barcode } = this.state;
+        const { cargo, products, suppliers, barcode } = this.state;
         return (
             <div className="row">
-                <div className="col-md-12 col-lg-12">
+                <div className="col-md-9 col-lg-8">
                     <div className="row mb-2">
                         <div className="col">
                             <form onSubmit={this.handleScanBarcode}>
@@ -256,18 +257,18 @@ class Purcha extends Component {
                                 className="form-control"
                                 onChange={this.setSupplierId}
                             >
-                                <option value="">Chọn nhà phân phối</option>
-                                {suppliers.map((cus) => (
+                                <option value="">Nhà phân phối</option>
+                                {suppliers.map((sup) => (
                                     <option
-                                        key={cus.id}
-                                        value={cus.id}
-                                    >{`${cus.name}`}</option>
+                                        key={sup.id}
+                                        value={sup.id}
+                                    >{`${sup.name}`}</option>
                                 ))}
                             </select>
                         </div>
 
                     </div>
-                    <div className="user-cart mb-1">
+                    <div className="user-purcha mb-1">
                         <div className="card vh-42 overflow-auto">
                             <table className="table table-striped ">
                                 <thead>
@@ -279,7 +280,7 @@ class Purcha extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {purcha.map((c) => (
+                                    {cargo.map((c) => (
                                         <tr key={c.id}>
                                             <td class="overflow-hidden">{c.name}</td>
                                             <td>{c.description}</td>
@@ -311,7 +312,7 @@ class Purcha extends Component {
                                             <td className="text-right">
                                                 
                                                 {(
-                                                    c.outputprice * c.pivot.quantity
+                                                    c.inputprice * c.pivot.quantity
                                                 )}{window.APP.currency_symbol}
                                             </td>
                                         </tr>
@@ -350,8 +351,8 @@ class Purcha extends Component {
                             <button
                                 type="button"
                                 className="btn btn-danger btn-block"
-                                onClick={this.handleEmptyCart}
-                                disabled={!purcha.length}
+                                onClick={this.handleEmptyPurcha}
+                                disabled={!cargo.length}
                             >
                                 Hủy
                             </button>
@@ -360,7 +361,7 @@ class Purcha extends Component {
                             <button
                                 type="button"
                                 className="btn btn-primary btn-block"
-                                disabled={!purcha.length}
+                                disabled={!cargo.length}
                                 onClick={this.handleClickSubmit}
                             >
                                 Lưu
@@ -368,14 +369,51 @@ class Purcha extends Component {
                         </div>
                     </div>
                 </div>
+                <div className="col-md-3 col-lg-4">
+                    <div className="mb-2">
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Tìm kiếm sản phẩm..."
+                            onChange={this.handleChangeSearch}
+                            onKeyDown={this.handleSeach}
+                        />
+                    </div>
+                    <div className="order-product">
+                        <div className="row">
+                           
+                        <div class="col-md-12 d-flex flex-row flex-wrap bd-highlight list-item mt-2 overflow-auto vh-100">
+                            {products.map((p) => (
+                                <div class="col-xl-6 col-md-4 col-6 p-1">
+                            <div onClick={() => this.addProductToPurcha(p.barcode)}
+                            key={p.id} class="card overflow-hidden bd-highlight">
+                                <div class="list-thumb d-flex  justify-content-center">
+                                    <img src={p.image_url} height="100px" width="100%"/>
+                                </div> 
+                                <div class="flex-grow-1 d-bock">
+                                    <div class="card-body align-self-center d-flex flex-column justify-content-between align-items-lg-center">
+                                        <div class="w-40 w-sm-100 item-title ct-inline">{p.name}</div> 
+                                        <p class="text-muted text-black-50 w-15 w-sm-100 mb-1">{p.barcode}</p>
+                                        <span class=" w-sm-100">{p.inputprice}{window.APP.currency_symbol}</span>  
+                                        <p class="position-absolute m-0 text-muted text-small w-15 w-sm-100 d-none d-lg-block item-badges top-1 right-1" >
+                                            <span class="badge bg-label-primary me-1">{p.quantity} {p.unit_purchas}</span>
+                                        </p>                                    
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            ))}
+                        </div>
+                        </div>
+                    </div>
+                </div> 
             </div>
         );
     }
 }
 
-export default Purcha;
+export default Cargo;
 
-if (document.getElementById("purcha")) {
-    ReactDOM.render(<Purcha />, document.getElementById("purcha"));
+if (document.getElementById("cargo")) {
+    ReactDOM.render(<Cargo />, document.getElementById("cargo"));
 }
-

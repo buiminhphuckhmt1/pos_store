@@ -36,6 +36,7 @@ class ProductUpdateRequest extends FormRequest
             'discountpercen' => 'nullable|integer',
             'inputprice' => 'required|regex:/^\d+(\.\d{1})?$/',
             'outputprice' => 'required|regex:/^\d+(\.\d{1})?$/',
+            'quantity' => 'required|integer',
             'stock_alert' => 'required|integer',
             'status' => 'required|boolean',
         ];

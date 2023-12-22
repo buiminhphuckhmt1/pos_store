@@ -13,4 +13,4 @@ import './bootstrap';
  */
 
 import './components/Cart';
-import './components/Purcha';
+import './components/Cargo';

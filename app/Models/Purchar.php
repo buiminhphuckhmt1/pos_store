@@ -4,34 +4,41 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Purcha extends Model
+class Purchar extends Model
 {
     protected $fillable = [
-        'suppler_id',
+        'supplier_id',
         'user_id'
     ];
 
     public function items()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(PurcharItem::class);
     }
 
-    public function payments()
+    public function paymentpurs()
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasMany(Paymentpur::class);
     }
 
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);
     }
-    public function purcha_item()
+    public function purchar_item()
     {
-        return $this->belongsTo(PurchaItem::class);
+        return $this->belongsTo(PurcharItem::class);
     }
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+    public function getSupplierName()
+    {
+        if($this->supplier) {
+            return $this->supplier->name;
+        }
+        return 'Khách vãng lai';
     }
     public function getUserName()
     {
@@ -61,7 +68,7 @@ class Purcha extends Model
     public function total()
     {
         return $this->items->map(function ($i){
-            return $i->price;
+            return $i->cost;
         })->sum();
     }
 
@@ -72,13 +79,13 @@ class Purcha extends Model
 
     public function receivedAmount()
     {
-        return $this->payments->map(function ($i){
+        return $this->paymentpurs->map(function ($i){
             return $i->amount;
         })->sum();
     }
     public function receivedDiscount()
     {
-        return $this->payments->map(function ($i){
+        return $this->paymentpurs->map(function ($i){
             return $i->discount;
         })->sum();
     }

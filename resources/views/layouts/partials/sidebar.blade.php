@@ -1,7 +1,7 @@
 <!-- Main Sidebar Container -->
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
-            <a href="{{ url('backend/home') }}" class="app-brand-link">
+            <a href="{{route('home')}}" class="app-brand-link">
               <span class="app-brand-logo demo w-px-30 h-px-30">
                   <img class="w-px-30 h-px-30" src="/storage/products/logo.png">
               </span>
@@ -61,9 +61,14 @@
                   </a>
                 </li>
                 
-                <li class="menu-item {{ activeSegment('purcha') }}" >
-                  <a href="{{ route('purcha.index') }}" class="menu-link">
+                <li class="menu-item {{ activeSegment('cargo') }}" >
+                  <a href="{{ route('cargo.index') }}" class="menu-link">
                     <div data-i18n="Tables">Nhập hàng</div>
+                  </a>
+                </li>
+                <li class="menu-item {{ activeSegment('purchars') }}">
+                  <a href="{{ route('purchars.index') }}" class="menu-link">
+                    <div data-i18n="Tables">Quản lý nhập hàng</div>
                   </a>
                 </li>
                 @endif

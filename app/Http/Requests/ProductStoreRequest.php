@@ -33,6 +33,7 @@ class ProductStoreRequest extends FormRequest
             'unit_sale' => 'required|string',
             'unit_purchas' => 'required|string',
             'discountpercen' => 'nullable|integer',
+            'quantity' => 'required|integer',
             'stock_alert' => 'required|integer',
             'inputprice' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'outputprice' => 'required|regex:/^\d+(\.\d{1,2})?$/',

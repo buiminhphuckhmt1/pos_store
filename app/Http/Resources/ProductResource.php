@@ -28,6 +28,7 @@ class ProductResource extends JsonResource
             'inputprice' => $this->inputprice,
             'outputprice' => $this->outputprice,
             'discountpercen' => $this->discountpercen,
+            'quantity' => $this->quantity,
             'stock_alert' => $this->stock_alert,
             'status' => $this->status,
             'created_at' => $this->created_at,

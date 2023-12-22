@@ -1,10 +1,11 @@
 <?php
 
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\PurchaController;
+use App\Http\Controllers\CargoController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PurcharController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BrandController;
@@ -24,7 +25,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::prefix('admin')->middleware('auth')->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
     Route::resource('products', ProductController::class);
@@ -34,6 +35,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::resource('brands', BrandController::class);
     Route::resource('customers', CustomerController::class);
     Route::resource('orders', OrderController::class);
+    Route::resource('purchars', PurcharController::class);
     Route::get('/export', [ExportProductController::class, 'export'])->name('export.export');
     Route::get('/print', [PrintController::class, 'print'])->name('print.print');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -41,9 +43,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/cart/change-qty', [CartController::class, 'changeQty']);
     Route::delete('/cart/delete', [CartController::class, 'delete']);
     Route::delete('/cart/empty', [CartController::class, 'empty']);
-    Route::get('/purcha', [PurchaController::class, 'index'])->name('purcha.index');
-    Route::post('/purcha', [PurchaController::class, 'store'])->name('purcha.store');
-    Route::post('/purcha/change-qty', [PurchaController::class, 'changeQty']);
-    Route::delete('/purcha/delete', [PurchaController::class, 'delete']);
-    Route::delete('/purcha/empty', [PurchaController::class, 'empty']);
+    Route::get('/cargo', [CargoController::class, 'index'])->name('cargo.index');
+    Route::post('/cargo', [CargoController::class, 'store'])->name('cargo.store');
+    Route::post('/cargo/change-qty', [CargoController::class, 'changeQty']);
+    Route::delete('/cargo/delete', [CargoController::class, 'delete']);
+    Route::delete('/cargo/empty', [CargoController::class, 'empty']);
 });
