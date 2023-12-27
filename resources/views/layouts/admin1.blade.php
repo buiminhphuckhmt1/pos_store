@@ -164,8 +164,7 @@ $('#close').on('click',function(){
 })
         </script>
          <script type="text/javascript">
-    var _odata=JSON.parse('{!! json_encode($datavisit) !!}');
-    var _ldata=JSON.parse('{!! json_encode($datavisitcount) !!}');
+    
     var options={
       series: [
         {
@@ -418,8 +417,7 @@ $('#close').on('click',function(){
     };
     var chart = new ApexCharts(document.querySelector("#totalRevenueChart"), options);
     chart.render();
-        var _edata=JSON.parse('{!! json_encode($datacountpost) !!}');
-        var _fdata=JSON.parse('{!! json_encode($datadatepost) !!}');
+    
        var options = {
         series: [
         {
@@ -498,8 +496,7 @@ $('#close').on('click',function(){
         };
       var chart = new ApexCharts(document.querySelector("#incomeChart"), options);
       chart.render();
-      var _gdata=JSON.parse('{!! json_encode($datamcountpost) !!}');
-        var _hdata=JSON.parse('{!! json_encode($datampost) !!}');
+      
        var options = {
         series: [
         {
@@ -579,10 +576,8 @@ $('#close').on('click',function(){
       var chart = new ApexCharts(document.querySelector("#incomemonthChart"), options);
       chart.render();
       $(function(){
-        var _ydata=JSON.parse('{!! json_encode($datalbca) !!}');
-        var _xdata=JSON.parse('{!! json_encode($datadtca) !!}');
-        var _zdata={!! json_encode($percenca) !!};
-        var _qdata={!! json_encode($post_date) !!};
+        
+      
       var options = {
         chart: {
           height: 165,

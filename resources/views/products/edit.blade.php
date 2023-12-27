@@ -182,6 +182,16 @@
                                                 </span>
                                                 @enderror
                                         </div>
+                                        <div class="form-group mb-3">
+                                            <label for="quantity">Số lượng ban đầu</label>
+                                            <input type="text" name="quantity" class="form-control @error('quantity') is-invalid @enderror" id="quantity"
+                                                placeholder="nhập số lượng cảnh báo" value="{{ old('quantity',$product->quantity) }}">
+                                            @error('quantity')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
                             </div>

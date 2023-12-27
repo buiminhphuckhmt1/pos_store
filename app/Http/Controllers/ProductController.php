@@ -127,6 +127,7 @@ class ProductController extends Controller
             'outputprice' => $request->outputprice,
             'discountpercen'=>$request->discountpercen,
             'stock_alert' => $request->stock_alert,
+            'quantity' => $request->quantity,
             'status' => $request->status
         ]);
 
@@ -181,6 +182,7 @@ class ProductController extends Controller
         $product->inputprice = $request->inputprice;
         $product->outputprice = $request->outputprice;
         $product->stock_alert = $request->stock_alert;
+        $product->quantity = $request->quantity;
         $product->status = $request->status;
 
         if ($request->hasFile('image')) {

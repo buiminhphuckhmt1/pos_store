@@ -118,8 +118,8 @@
                     <td>{{$product->category->name}}</td>
                     <td>{{$product->unit_purchas}}</td>
                     <td>{{$product->unit_sale}}</td>
-                    <td>{{ number_format(($qty->where('product_id', $product->id)->where('id',$qty->where('product_id', $product->id)->max('id'))->first()->cost)) }} {{ config('settings.currency_symbol') }}</td>
-                    <td>{{ number_format(($qty->where('product_id', $product->id)->where('id',$qty->where('product_id', $product->id)->max('id'))->first()->price)) }} {{ config('settings.currency_symbol') }}</td>
+                    <td>{{ number_format(($product->inputprice)) }} {{ config('settings.currency_symbol') }}</td>
+                    <td>{{ number_format(($product->outputprice)) }} {{ config('settings.currency_symbol') }}</td>
                     <td>{{$product->quantity}}</td>
                     <td>{{$product->stock_alert}}</td>
                     <td>
