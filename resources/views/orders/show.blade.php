@@ -104,10 +104,10 @@
                             <th width="20%"></th>
                         </thead>
                         <tr>
-                            <td><h1> Cửa hàng Thân Nguyệt</h1></td>
+                            <td><h1> Cửa hàng Việt Anh</h1></td>
                         </tr>
                         <tr>
-                            <td><h2>ĐC:Ql48B, Quỳnh Châu, Quỳnh Lưu, NA </h2></td>
+                            <td><h2>68 Phương Canh, Quận Nam Từ Liêm, Thành Phố Hà Nội</h2></td>
                             <td><h1>HÓA ĐƠN BÁN HÀNG</h1></td>
                         </tr>
                         <tr>
