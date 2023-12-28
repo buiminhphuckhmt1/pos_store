@@ -260,18 +260,20 @@ class Cart extends Component {
         if (
           prevState.cart !== this.state.cart ||
           prevState.discount !== this.state.discount ||
-          prevState.products !== this.state.products
+          prevState.products !== this.state.products 
         ) {
           this.calculateTotalBill();
         }
       }
       calculateTotalBill = () =>{
-        let total = sum(this.state.cart.map((c) => c.pivot.quantity * c.outputprice));
+        let total = sum(this.state.cart.map((c) => c.pivot.quantity * (c.outputprice-c.outputprice*c.discountpercen/100)));
         let totalBill = total - this.state.discount;
         totalBill = totalBill>0? totalBill: 0;
+        let no= totalBill-this.state.amount;
         this.setState({
             total: total,
-            totalBill: totalBill
+            totalBill: totalBill,
+            no: no
         });
       }
     render() {
@@ -289,14 +291,14 @@ class Cart extends Component {
                                             <th width="20%"></th>
                                         </thead>
                                         <tr>
-                                            <td><h1> Cửa hàng Thân Nguyệt</h1></td>
+                                            <td><h1> Cửa hàng VIỆT ANH</h1></td>
                                         </tr>
                                         <tr>
-                                            <td><h2>ĐC:Ql48B, Quỳnh Châu, Quỳnh Lưu, NA </h2></td>
+                                            <td><h2>ĐC:68, PHƯƠNG CANH, NAM TỪ LIÊM, HN </h2></td>
                                             <td><h1>HÓA ĐƠN BÁN HÀNG</h1></td>
                                         </tr>
                                         <tr>
-                                            <td><h2>SĐT:0329790031-09664726629-0988690507</h2></td>
+                                            <td><h2>SĐT:0389426643</h2></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -311,8 +313,8 @@ class Cart extends Component {
                                             <th width="30%"></th>
                                         </thead>
                                         <tbody>
-                                            <tr>                                        
-                                                <td><h1>{customers.last_name}</h1></td>                                         
+                                            <tr>                                   
+                                                <td><h1>{customers.lastname}</h1></td>                                         
                                                 <td class="d-flex justify-content-end"> <h2>No:/</h2></td>
                                             </tr>
                                             <tr>
@@ -322,6 +324,7 @@ class Cart extends Component {
                                                 <td><h2>SĐT:</h2></td>
                                                 <td class="d-flex justify-content-end"> <h2></h2></td>
                                             </tr>
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -344,7 +347,7 @@ class Cart extends Component {
                                     {cart.map((c) => (
                                         <tr key={c.id} class="" text-align="center">
                                             <td class="d-flex justify-content-begin overflow-hidden"><h2>{c.name}</h2></td>
-                                            <th class=""><h2>{c.description}</h2></th>
+                                            <th class=""><h2>{c.unit_purchas}</h2></th>
                                             <th class=""><h2>{c.pivot.quantity}</h2></th>
                                             <th class=""><h2>{c.outputprice}{window.APP.currency_symbol}</h2></th>
                                             <td class="d-flex justify-content-end"><h2>{c.pivot.quantity*c.outputprice}{window.APP.currency_symbol}</h2></td>
@@ -377,19 +380,9 @@ class Cart extends Component {
                                             <td class=""><h2>Thành tiền:</h2></td>
                                             <td class="d-flex justify-content-end"><h2>{this.state.totalBill}{window.APP.currency_symbol} </h2></td>
                                         </tr>
-                                        <tr class="">
-                                            <td class=""></td>
-                                            <td class=""><h2>Đã trả:</h2></td>
-                                            <td class="d-flex justify-content-end"><h2>{window.APP.currency_symbol}</h2></td>
-                                        </tr>
-                                        <tr class="">
-                                            <td class=""></td>
-                                            <td class=""><h2>Dư nợ:</h2></td>
-                                            <td class="d-flex justify-content-end"><h2></h2></td>
-                                        </tr>
                                     </tbody>
                                 </table>
-                                <table>
+                                {/* <table>
                                     <thead>
                                         <tr>
                                             <th width="25%"><h2>khách hàng</h2></th>
@@ -409,12 +402,12 @@ class Cart extends Component {
                                             <td></td>
                                         </tr>
                                         <tr>
-                                        <th><h3>{this.state.last_name}</h3></th>
+                                        <th><h3>{this.state.customers.last_name}</h3></th>
                                         <td></td>
                                         <th><h3></h3></th>
                                         </tr>
                                     </tbody>
-                                </table>
+                                </table> */}
                                 <div width="100%">_________________________________________________________________________________________________________________________________</div>
                                 <table>
                                     <thead>
@@ -483,7 +476,7 @@ class Cart extends Component {
                                     {cart.map((c) => (
                                         <tr key={c.id}>
                                             <td class="overflow-hidden">{c.name}</td>
-                                            <td>{c.description}</td>
+                                            <td>{c.unit_purchas}</td>
                                             <td class="">
                                                 <div class="d-inline-flex">
                                                 <input
@@ -512,7 +505,7 @@ class Cart extends Component {
                                             <td className="text-right">
                                                 
                                                 {(
-                                                    c.outputprice * c.pivot.quantity
+                                                    (c.outputprice-c.outputprice*c.discountpercen/100) * c.pivot.quantity
                                                 )}{window.APP.currency_symbol}
                                             </td>
                                         </tr>

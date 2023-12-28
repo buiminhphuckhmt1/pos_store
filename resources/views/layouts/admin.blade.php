@@ -91,7 +91,7 @@
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                   <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                      <img src="/storage/products/logo.png" alt="" class="w-px-40 h-auto rounded-circle">
+                      <img src="{{ Storage::url(auth()->user()->image) }}" alt="" class="w-px-40 h-auto rounded-circle">
                     </div>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
@@ -113,12 +113,12 @@
                     <li>
                       <div class="dropdown-divider"></div>
                     </li>
-                    <li>
+                    <!-- <li>
                       <a class="dropdown-item" href="">
                         <i class="bx bx-user me-2"></i>
                         <span class="align-middle">Thông tin cá nhân</span>
                       </a>
-                    </li>
+                    </li> -->
                     <li>
                       <a class="dropdown-item" href="{{ route('settings.index') }}">
                         <i class="bx bx-cog me-2"></i>

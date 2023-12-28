@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@if(Auth::user()->role_id && Auth::user()->role_id == 4)
 @section('content-header', 'Thống kê')
 @section('content')
 <div class="content-wrapper">
@@ -100,3 +101,11 @@
               </div>
             </div>  
 @endsection
+@endif
+@if(Auth::user()->role_id && Auth::user()->role_id != 4)
+@section('content')
+<div class="content-wrapper">        
+  <h3 class="card-title mb-2">Xin chào {{ auth()->user()->role->name }} {{ auth()->user()->last_name }}</h3>
+</div>  
+@endsection
+@endif

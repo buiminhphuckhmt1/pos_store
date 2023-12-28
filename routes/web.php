@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ExportProductController;
 
 Route::get('/', function () {
-    return redirect('/admin');
+    return redirect('login');
 });
 
 Auth::routes();

@@ -181,6 +181,7 @@ class ProductController extends Controller
         $product->unit_purchas = $request->unit_purchas;
         $product->inputprice = $request->inputprice;
         $product->outputprice = $request->outputprice;
+        $product->discountpercen=$request->discountpercen;
         $product->stock_alert = $request->stock_alert;
         $product->quantity = $request->quantity;
         $product->status = $request->status;

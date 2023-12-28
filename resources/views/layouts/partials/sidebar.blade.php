@@ -15,12 +15,14 @@
 
           <div class="menu-inner-shadow"></div>
           <ul class="menu-inner py-1">
+          @if(Auth::user()->role_id && Auth::user()->role_id == 4)
             <li class="menu-item">
               <a href="{{route('home')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Thống kê</div>
               </a>
             </li>
+            @endif
             <li class="menu-item open">
               <ul class="menu-sub">
               @if(Auth::user()->role_id && Auth::user()->role_id != 3)
@@ -90,13 +92,13 @@
                 <ul class="menu-sub">
                   <a href="javascript:void(0);" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-phone"></i>
-                    <div data-i18n="Tables">0338799081</div>
+                    <div data-i18n="Tables">0389426653</div>
                   </a>
-                  <a href="https://www.facebook.com/longmotull" target="_blank" class="menu-link">
+                  <a href="https://www.facebook.com/phuoc.bui.52643821" target="_blank" class="menu-link">
                     <i class='menu-icon tf-icons bx bxl-facebook-square'></i>
                     <div data-i18n="Tables">Facebook</div>
                   </a>
-                  <a href="https://zalo.me/0338799081" target="_blank" class="menu-link">
+                  <a href="https://zalo.me/0389426653" target="_blank" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-phone-call"></i>
                     <div data-i18n="Tables">Zalo</div>
                   </a>

@@ -53,7 +53,7 @@ class PurcharController extends Controller
                 'quantity' => $item->pivot->quantity,
                 'product_id' => $item->id,
             ]);
-            $item->quantity = $item->quantity - $item->pivot->quantity;
+            $item->quantity = $item->quantity + $item->pivot->quantity;
             $item->save();
         }
         $request->user()->cargo()->detach();
